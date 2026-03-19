@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投资研究终端 - Investment Research Terminal</title>
+    <link rel="stylesheet" href="assets/css/terminal.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部状态栏 -->
+    <header class="top-bar">
+        <div class="brand">
+            <div class="brand-icon">IR</div>
+            <div>
+                <div class="brand-text">INVEST RESEARCH</div>
+                <div class="brand-sub">投资研究终端</div>
+            </div>
+        </div>
+        <div class="top-status">
+            <div class="status-item">
+                <span class="status-indicator"></span>
+                <span>SYSTEM ONLINE</span>
+            </div>
+            <div class="status-item mono" id="currentTime">
+                --:--:--
+            </div>
+        </div>
+    </header>
+
+    <!-- 左侧导航 -->
+    <aside class="sidebar">
+        <nav class="nav-section">
+            <div class="nav-title">Dashboard</div>
+            <ul class="nav-list">
+                <li class="nav-item active" onclick="location.href='index.html'">
+                    <span class="nav-icon">◈</span>
+                    <span class="nav-text">研究总览</span>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-title">Research Projects</div>
+            <ul class="nav-list" id="projectNav">
+                <li class="nav-item" onclick="location.href='projects/gold-iv/index.html'">
+                    <span class="nav-icon">◉</span>
+                    <span class="nav-text">黄金期权IV</span>
+                    <span class="nav-badge">VOL</span>
+                </li>
+                <li class="nav-item" onclick="location.href='#'">
+                    <span class="nav-icon">◉</span>
+                    <span class="nav-text">资产轮动</span>
+                    <span class="nav-badge">ROT</span>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-title">System</div>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <span class="nav-icon">⚙</span>
+                    <span class="nav-text">设置</span>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-icon">?</span>
+                    <span class="nav-text">帮助</span>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">
+                <span class="page-title-icon">◈</span>
+                研究项目总览
+            </h1>
+            <p class="page-desc">
+                系统性投资研究项目数据展示与分析平台。当前正在追踪黄金期权隐含波动率（IV）与资产轮动策略。
+            </p>
+        </div>
+
+        <!-- 统计概览 -->
+        <div class="grid grid-4" style="margin-bottom: 32px;">
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">活跃项目</div>
+                    <div class="card-badge badge-live">LIVE</div>
+                </div>
+                <div class="card-value mono">02</div>
+                <div class="card-change">
+                    <span>研究中</span>
+                </div>
+                <div class="card-footer">
+                    黄金IV追踪 + 资产轮动
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">数据追踪天数</div>
+                    <div class="card-badge badge-up">+1</div>
+                </div>
+                <div class="card-value mono" id="trackingDays">--</div>
+                <div class="card-change change-up">
+                    <span>↑</span>
+                    <span>持续积累中</span>
+                </div>
+                <div class="card-footer">
+                    自 2026-03-19 开始
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">上次更新</div>
+                    <div class="card-badge badge-up">AUTO</div>
+                </div>
+                <div class="card-value mono" style="font-size: 24px;" id="lastUpdateTime">
+                    --:--
+                </div>
+                <div class="card-change">
+                    <span>自动同步</span>
+                </div>
+                <div class="card-footer">
+                    GitHub Actions 定时任务
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">系统状态</div>
+                    <div class="card-badge badge-up">OK</div>
+                </div>
+                <div class="card-value mono" style="color: var(--color-up);">NORMAL</div>
+                <div class="card-change change-up">
+                    <span>运行正常</span>
+                </div>
+                <div class="card-footer">
+                    所有服务在线
+                </div>
+            </div>
+        </div>
+
+        <!-- 项目卡片 -->
+        <div class="grid grid-2">
+            <!-- 黄金项目 -->
+            <div class="project-card" onclick="location.href='projects/gold-iv/index.html'">
+                <div class="project-icon" style="color: var(--color-gold);">🥇</div>
+                <div class="project-title">黄金期权IV追踪</div>
+                <div class="project-desc">
+                    系统性记录黄金 Call 期权隐含波动率（IV）与金价走势的关系，建立 IV 交易信号体系。追踪周期 6 个月，积累 100+ 交易日数据。
+                </div>
+                <div class="project-meta">
+                    <div class="project-meta-item">
+                        <span>📊</span>
+                        <span>数据追踪</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span>🎯</span>
+                        <span>信号研究</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span>📈</span>
+                        <span>可视化</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 资产轮动项目 -->
+            <div class="project-card" style="opacity: 0.7;">
+                <div class="project-icon">🔄</div>
+                <div class="project-title">资产轮动策略</div>
+                <div class="project-desc">
+                    基于市场周期的资产配置轮动研究。分析不同市场环境下的资产表现，建立动态调整策略。项目筹建中，即将启动。
+                </div>
+                <div class="project-meta">
+                    <div class="project-meta-item">
+                        <span>📝</span>
+                        <span>筹建中</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span>⏳</span>
+                        <span>即将启动</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('zh-CN', { 
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('currentTime').textContent = timeStr;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // 计算追踪天数
+        const startDate = new Date('2026-03-19');
+        const today = new Date();
+        const days = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+        document.getElementById('trackingDays').textContent = days.toString().padStart(2, '0');
+
+        // 上次更新时间
+        const lastUpdate = new Date();
+        lastUpdate.setHours(10, 0, 0);
+        if (lastUpdate > today) {
+            lastUpdate.setDate(lastUpdate.getDate() - 1);
+        }
+        document.getElementById('lastUpdateTime').textContent = 
+            lastUpdate.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+    </script>
+</body>
+</html>

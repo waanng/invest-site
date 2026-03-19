@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黄金期权IV追踪 - Gold IV Research</title>
+    <link rel="stylesheet" href="../../assets/css/terminal.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- 顶部状态栏 -->
+    <header class="top-bar">
+        <div class="brand">
+            <div class="brand-icon" style="background: linear-gradient(135deg, #ffd700, #ffed4e);">IR</div>
+            <div>
+                <div class="brand-text">INVEST RESEARCH</div>
+                <div class="brand-sub">黄金期权IV追踪</div>
+            </div>
+        </div>
+        <div class="top-status">
+            <div class="status-item">
+                <span class="status-indicator"></span>
+                <span class="mono">GC=F LIVE</span>
+            </div>
+            <div class="status-item mono" id="currentTime">--:--:--</div>
+        </div>
+    </header>
+
+    <!-- 左侧导航 -->
+    <aside class="sidebar">
+        <nav class="nav-section">
+            <div class="nav-title">Dashboard</div>
+            <ul class="nav-list">
+                <li class="nav-item" onclick="location.href='../../index.html'">
+                    <span class="nav-icon">◈</span>
+                    <span class="nav-text">研究总览</span>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-title">Research Projects</div>
+            <ul class="nav-list">
+                <li class="nav-item active" onclick="location.href='index.html'">
+                    <span class="nav-icon">◉</span>
+                    <span class="nav-text">黄金期权IV</span>
+                    <span class="nav-badge">VOL</span>
+                </li>
+                <li class="nav-item" onclick="location.href='../asset-rotation/index.html'">
+                    <span class="nav-icon">◉</span>
+                    <span class="nav-text">资产轮动</span>
+                    <span class="nav-badge">ROT</span>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-title">Gold Analysis</div>
+            <ul class="nav-list">
+                <li class="nav-item" onclick="scrollToSection('overview')">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">实时数据</span>
+                </li>
+                <li class="nav-item" onclick="scrollToSection('charts')">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-text">图表分析</span>
+                </li>
+                <li class="nav-item" onclick="scrollToSection('signals')">
+                    <span class="nav-icon">🎯</span>
+                    <span class="nav-text">交易信号</span>
+                </li>
+                <li class="nav-item" onclick="scrollToSection('history')">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-text">历史数据</span>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">
+                <span class="page-title-icon" style="color: var(--color-gold);">🥇</span>
+                黄金期权IV追踪
+            </h1>
+            <p class="page-desc">
+                系统性记录黄金 Call 期权隐含波动率（IV）与金价走势的关系，建立 IV 交易信号体系。
+                <span class="mono" style="color: var(--text-muted);">| TRACKING SINCE 2026-03-19</span>
+            </p>
+        </div>
+
+        <!-- 实时数据概览 -->
+        <section id="overview" class="grid grid-4" style="margin-bottom: 32px;">
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">现货黄金</div>
+                    <div class="card-badge badge-live">LIVE</div>
+                </div>
+                <div class="card-value mono" id="goldPrice">$----.--</div>
+                <div class="card-change" id="goldChange">
+                    <span class="mono">--.--%</span>
+                </div>
+                <div class="card-footer mono">
+                    GC=F <span style="color: var(--color-gold);">●</span> COMEX
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">GVZ指数</div>
+                    <div class="card-badge" id="gvzBadge">IV</div>
+                </div>
+                <div class="card-value mono" id="gvzValue">--.--</div>
+                <div class="card-change" id="gvzChange">
+                    <span class="mono">--.--%</span>
+                </div>
+                <div class="card-footer mono">
+                    CBOE Gold ETF Volatility
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">IV评估</div>
+                    <div class="card-badge" id="ivBadge">--</div>
+                </div>
+                <div class="card-value mono" id="ivStatus" style="font-size: 24px;">--</div>
+                <div class="card-change" id="ivDesc">
+                    <span>--</span>
+                </div>
+                <div class="card-footer mono">
+                    IMPLIED VOLATILITY
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">交易信号</div>
+                    <div class="card-badge" id="signalBadge">--</div>
+                </div>
+                <div class="card-value mono" id="signalValue" style="font-size: 24px;">--</div>
+                <div class="card-change" id="signalDesc">
+                    <span>--</span>
+                </div>
+                <div class="card-footer mono">
+                    SIGNAL SYSTEM
+                </div>
+            </div>
+        </section>
+
+        <!-- 图表区域 -->
+        <section id="charts" style="margin-bottom: 32px;">
+            <div class="grid grid-2">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">金价与GVZ走势对比</div>
+                        <div class="chart-controls">
+                            <button class="chart-btn active" onclick="changeTimeRange('30d')">30D</button>
+                            <button class="chart-btn" onclick="changeTimeRange('90d')">90D</button>
+                            <button class="chart-btn" onclick="changeTimeRange('all')">ALL</button>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="priceGvzChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">价格涨跌 vs IV变化相关性</div>
+                        <div class="chart-controls">
+                            <button class="chart-btn active">SCATTER</button>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="correlationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 信号系统 -->
+        <section id="signals" style="margin-bottom: 32px;">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-title">交易信号评估体系</div>
+                </div>
+                <div class="grid grid-4" style="padding: 20px; gap: 16px;">
+                    <div style="text-align: center; padding: 16px; background: var(--bg-secondary); border-radius: 6px;">
+                        <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">信号A: IV绝对水平</div>
+                        <div class="mono" style="font-size: 18px; color: var(--color-gold); margin-bottom: 4px;" id="signalA">--</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);" id="signalADesc">--</div>
+                    </div>
+                    <div style="text-align: center; padding: 16px; background: var(--bg-secondary); border-radius: 6px;">
+                        <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">信号B: IV变化趋势</div>
+                        <div class="mono" style="font-size: 18px; color: var(--color-gold); margin-bottom: 4px;" id="signalB">--</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);" id="signalBDesc">--</div>
+                    </div>
+                    <div style="text-align: center; padding: 16px; background: var(--bg-secondary); border-radius: 6px;">
+                        <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">信号C: IV偏斜</div>
+                        <div class="mono" style="font-size: 18px; color: var(--color-gold); margin-bottom: 4px;" id="signalC">--</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);" id="signalCDesc">--</div>
+                    </div>
+                    <div style="text-align: center; padding: 16px; background: var(--bg-secondary); border-radius: 6px; border: 2px solid var(--color-gold);">
+                        <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">综合评分</div>
+                        <div class="mono" style="font-size: 24px; color: var(--color-gold); font-weight: 700;" id="totalScore">--</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);" id="totalAction">--</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 历史数据表格 -->
+        <section id="history">
+            <div class="data-table-container">
+                <div class="data-table-header">
+                    <div class="data-table-title">历史数据记录</div>
+                    <div class="data-table-actions">
+                        <button class="table-btn" onclick="downloadData()">📥 导出CSV</button>
+                        <button class="table-btn" onclick="refreshData()">🔄 刷新</button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>DATE</th>
+                            <th>PRICE</th>
+                            <th>CHANGE</th>
+                            <th>GVZ</th>
+                            <th>GVZ Δ</th>
+                            <th>IV LEVEL</th>
+                            <th>SIGNAL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <tr>
+                            <td colspan="7" class="loading">
+                                <div class="spinner"></div>
+                                LOADING DATA...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/gold-data.js"></script>
+    <script>
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                now.toLocaleTimeString('zh-CN', { hour12: false });
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // 平滑滚动
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 下载数据
+        function downloadData() {
+            alert('导出功能开发中...');
+        }
+
+        // 刷新数据
+        function refreshData() {
+            location.reload();
+        }
+
+        // 切换时间范围
+        function changeTimeRange(range) {
+            document.querySelectorAll('.chart-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 触发图表更新
+            if (window.updateCharts) {
+                window.updateCharts(range);
+            }
+        }
+    </script>
+</body>
+</html>

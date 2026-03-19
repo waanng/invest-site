@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资产轮动策略 - Asset Rotation Research</title>
+    <link rel="stylesheet" href="../../assets/css/terminal.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部状态栏 -->
+    <header class="top-bar">
+        <div class="brand">
+            <div class="brand-icon">IR</div>
+            <div>
+                <div class="brand-text">INVEST RESEARCH</div>
+                <div class="brand-sub">资产轮动策略研究</div>
+            </div>
+        </div>
+        <div class="top-status">
+            <div class="status-item">
+                <span class="status-indicator" style="background: var(--color-warn);"></span>
+                <span class="mono">COMING SOON</span>
+            </div>
+            <div class="status-item mono" id="currentTime">--:--:--</div>
+        </div>
+    </header>
+
+    <!-- 左侧导航 -->
+    <aside class="sidebar">
+        <nav class="nav-section">
+            <div class="nav-title">Dashboard</div>
+            <ul class="nav-list">
+                <li class="nav-item" onclick="location.href='../../index.html'">
+                    <span class="nav-icon">◈</span>
+                    <span class="nav-text">研究总览</span>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-title">Research Projects</div>
+            <ul class="nav-list">
+                <li class="nav-item" onclick="location.href='../gold-iv/index.html'">
+                    <span class="nav-icon">◉</span>
+                    <span class="nav-text">黄金期权IV</span>
+                    <span class="nav-badge">VOL</span>
+                </li>
+                <li class="nav-item active" onclick="location.href='index.html'">
+                    <span class="nav-icon">◉</span>
+                    <span class="nav-text">资产轮动</span>
+                    <span class="nav-badge">ROT</span>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">
+                <span class="page-title-icon">🔄</span>
+                资产轮动策略研究
+            </h1>
+            <p class="page-desc">
+                基于市场周期的资产配置轮动研究。分析不同市场环境下的资产表现，建立动态调整策略。
+                <span class="mono" style="color: var(--text-muted);">| PROJECT STATUS: PLANNING</span>
+            </p>
+        </div>
+
+        <div class="grid grid-2" style="margin-top: 40px;">
+            <div class="data-card" style="text-align: center; padding: 60px 40px;">
+                <div style="font-size: 64px; margin-bottom: 20px;">🚧</div>
+                <div style="font-size: 24px; font-weight: 600; margin-bottom: 16px; color: var(--color-gold);">项目筹建中</div>
+                <div style="color: var(--text-secondary); line-height: 1.6;">
+                    资产轮动策略研究项目正在规划中，预计近期启动。
+                    <br>将包含 ETF 轮动、行业轮动等多个子课题研究。
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">项目规划</div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding: 12px; background: var(--bg-secondary); border-radius: 6px;">
+                        <span style="color: var(--color-up);">✓</span>
+                        <span>研究框架设计</span>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding: 12px; background: var(--bg-secondary); border-radius: 6px;">
+                        <span style="color: var(--color-up);">✓</span>
+                        <span>数据源确定</span>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding: 12px; background: var(--bg-secondary); border-radius: 6px; opacity: 0.5;">
+                        <span>○</span>
+                        <span>数据采集系统搭建</span>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding: 12px; background: var(--bg-secondary); border-radius: 6px; opacity: 0.5;">
+                        <span>○</span>
+                        <span>策略回测</span>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-secondary); border-radius: 6px; opacity: 0.5;">
+                        <span>○</span>
+                        <span>可视化看板</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                now.toLocaleTimeString('zh-CN', { hour12: false });
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
