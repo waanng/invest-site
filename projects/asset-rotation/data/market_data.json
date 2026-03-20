@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "date": "2026-03-20",
+    "bond_yield_30y": 0.33,
+    "gold_price_usd": 4648.0,
+    "usdcny": 6.8852,
+    "gold_price_cny": 1028.9,
+    "hs300_price": 4567.01806640625,
+    "hs300_change_pct": -0.35,
+    "copper_price": 5.419000148773193,
+    "updated_at": "2026-03-20T13:51:19.473038"
+  }
+]
