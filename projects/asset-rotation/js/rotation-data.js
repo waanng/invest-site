@@ -93,39 +93,44 @@ function useSampleData() {
 
 // 更新UI
 function updateUI() {
-    if (marketData.length === 0) return;
+    console.log('Updating UI, marketData:', marketData.length, 'indicators:', Object.keys(indicators));
     
-    const latest = marketData[marketData.length - 1];
+    // 使用最新的市场数据或示例数据
+    let latest = marketData.length > 0 ? marketData[marketData.length - 1] : null;
     
     // 更新国债收益率
     const bondYieldEl = document.getElementById('bondYield');
-    if (bondYieldEl && latest.bond_yield_30y) {
-        bondYieldEl.textContent = latest.bond_yield_30y.toFixed(2) + '%';
+    if (bondYieldEl) {
+        const yield = latest?.bond_yield_30y || indicators?.bond_yield || 2.27;
+        bondYieldEl.textContent = yield.toFixed(2) + '%';
         
         // 根据收益率设置颜色
-        if (latest.bond_yield_30y > 2.8) {
+        if (yield > 2.8) {
             bondYieldEl.style.color = 'var(--color-up)';
-        } else if (latest.bond_yield_30y < 2.0) {
+        } else if (yield < 2.0) {
             bondYieldEl.style.color = 'var(--color-warn)';
         }
     }
     
     // 更新股债性价比
     const stockBondRatioEl = document.getElementById('stockBondRatio');
-    if (stockBondRatioEl && indicators.stock_bond_ratio) {
-        stockBondRatioEl.textContent = indicators.stock_bond_ratio.toFixed(2) + '%';
+    if (stockBondRatioEl) {
+        const ratio = indicators?.stock_bond_ratio || 5.21;
+        stockBondRatioEl.textContent = ratio.toFixed(2) + '%';
     }
     
     // 更新房金比
     const houseGoldRatioEl = document.getElementById('houseGoldRatio');
-    if (houseGoldRatioEl && indicators.house_gold_ratio) {
-        houseGoldRatioEl.textContent = indicators.house_gold_ratio.toFixed(1);
+    if (houseGoldRatioEl) {
+        const ratio = indicators?.house_gold_ratio || 8.0;
+        houseGoldRatioEl.textContent = ratio.toFixed(1);
     }
     
     // 更新金铜比
     const goldCopperRatioEl = document.getElementById('goldCopperRatio');
-    if (goldCopperRatioEl && indicators.gold_copper_ratio) {
-        goldCopperRatioEl.textContent = indicators.gold_copper_ratio.toFixed(0);
+    if (goldCopperRatioEl) {
+        const ratio = indicators?.gold_copper_ratio || 729;
+        goldCopperRatioEl.textContent = ratio.toFixed(0);
     }
     
     // 更新信号状态
