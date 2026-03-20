@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>资产轮动策略 - Asset Rotation Research</title>
+    <title>资产轮动策略研究 - Asset Rotation Research</title>
     <link rel="stylesheet" href="../../assets/css/terminal.css">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- 顶部状态栏 -->
@@ -19,8 +20,8 @@
         </div>
         <div class="top-status">
             <div class="status-item">
-                <span class="status-indicator" style="background: var(--color-warn);"></span>
-                <span class="mono">COMING SOON</span>
+                <span class="status-indicator"></span>
+                <span class="mono">LIVE DATA</span>
             </div>
             <div class="status-item mono" id="currentTime">--:--:--</div>
         </div>
@@ -53,6 +54,28 @@
                 </li>
             </ul>
         </nav>
+
+        <nav class="nav-section">
+            <div class="nav-title">Rotation Analysis</div>
+            <ul class="nav-list">
+                <li class="nav-item" onclick="scrollToSection('cycle')">
+                    <span class="nav-icon">🔄</span>
+                    <span class="nav-text">周期定位</span>
+                </li>
+                <li class="nav-item" onclick="scrollToSection('indicators')">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">核心指标</span>
+                </li>
+                <li class="nav-item" onclick="scrollToSection('signals')">
+                    <span class="nav-icon">🎯</span>
+                    <span class="nav-text">触发信号</span>
+                </li>
+                <li class="nav-item" onclick="scrollToSection('allocation')">
+                    <span class="nav-icon">⚖️</span>
+                    <span class="nav-text">配置建议</span>
+                </li>
+            </ul>
+        </nav>
     </aside>
 
     <!-- 主内容区 -->
@@ -63,56 +86,241 @@
                 资产轮动策略研究
             </h1>
             <p class="page-desc">
-                基于市场周期的资产配置轮动研究。分析不同市场环境下的资产表现，建立动态调整策略。
-                <span class="mono" style="color: var(--text-muted);">| PROJECT STATUS: PLANNING</span>
+                基于"货币周期 × 信用周期"的资产配置轮动研究。监测五大核心指标，识别周期拐点，动态调整仓位。
+                <span class="mono" style="color: var(--text-muted);">| FRAMEWORK: 中国版投资时钟</span>
             </p>
         </div>
 
-        <div class="grid grid-2" style="margin-top: 40px;">
-            <div class="data-card" style="text-align: center; padding: 60px 40px;">
-                <div style="font-size: 64px; margin-bottom: 20px;">🚧</div>
-                <div style="font-size: 24px; font-weight: 600; margin-bottom: 16px; color: var(--color-gold);">项目筹建中</div>
-                <div style="color: var(--text-secondary); line-height: 1.6;">
-                    资产轮动策略研究项目正在规划中，预计近期启动。
-                    <br>将包含 ETF 轮动、行业轮动等多个子课题研究。
+        <!-- 周期定位 -->
+        <section id="cycle" style="margin-bottom: 32px;">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-title">当前周期定位</div>
+                    <div class="chart-controls">
+                        <button class="chart-btn active">实时</button>
+                    </div>
+                </div>
+                
+                <div style="padding: 40px; text-align: center;">
+                    <div style="display: inline-grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--border-color); padding: 2px; border-radius: 8px;">
+                        <!-- 四象限图 -->
+                        <div id="quadrant-1" style="padding: 40px; background: var(--bg-secondary); position: relative;">
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">宽货币 + 宽信用</div>
+                            <div style="font-size: 18px; font-weight: 600; color: var(--color-gold);">复苏启动</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 8px;">最优: A股+黄金</div>
+                            <div id="marker-1" style="display: none; position: absolute; top: 10px; right: 10px; width: 12px; height: 12px; background: var(--color-up); border-radius: 50%;"></div>
+                        </div>
+                        <div id="quadrant-2" style="padding: 40px; background: var(--bg-secondary); position: relative;">
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">紧货币 + 宽信用</div>
+                            <div style="font-size: 18px; font-weight: 600; color: var(--color-warn);">过热压制</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 8px;">最优: 黄金+大宗</div>
+                            <div id="marker-2" style="display: none; position: absolute; top: 10px; right: 10px; width: 12px; height: 12px; background: var(--color-up); border-radius: 50%;"></div>
+                        </div>
+                        <div id="quadrant-3" style="padding: 40px; background: var(--bg-secondary); position: relative;">
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">紧货币 + 紧信用</div>
+                            <div style="font-size: 18px; font-weight: 600; color: var(--color-down);">主动收缩</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 8px;">最优: 现金+黄金</div>
+                            <div id="marker-3" style="display: none; position: absolute; top: 10px; right: 10px; width: 12px; height: 12px; background: var(--color-up); border-radius: 50%;"></div>
+                        </div>
+                        <div id="quadrant-4" style="padding: 40px; background: var(--bg-secondary); position: relative;">
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">宽货币 + 紧信用</div>
+                            <div style="font-size: 18px; font-weight: 600; color: var(--color-info);">衰退底部</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 8px;">最优: 长债+黄金</div>
+                            <div id="marker-4" style="display: block; position: absolute; top: 10px; right: 10px; width: 12px; height: 12px; background: var(--color-up); border-radius: 50%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 24px; padding: 16px; background: var(--bg-secondary); border-radius: 8px; display: inline-block;">
+                        <div style="font-size: 12px; color: var(--text-muted);">当前判断</div>
+                        <div style="font-size: 20px; font-weight: 600; color: var(--color-gold); margin-top: 4px;">
+                            宽货币 + 紧信用 = <span id="currentPhase">衰退底部</span>
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">
+                            向复苏过渡的临界区
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心指标 -->
+        <section id="indicators" class="grid grid-4" style="margin-bottom: 32px;">
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">30年国债收益率</div>
+                    <div class="card-badge badge-live">LIVE</div>
+                </div>
+                <div class="card-value mono" id="bondYield">--.--%</div>
+                <div class="card-change change-neutral">
+                    <span>历史低位区</span>
+                </div>
+                <div class="card-footer mono">
+                    阈值: >2.8% 考虑加仓
                 </div>
             </div>
 
             <div class="data-card">
                 <div class="card-header">
-                    <div class="card-title">项目规划</div>
+                    <div class="card-title">股债性价比</div>
+                    <div class="card-badge badge-up">+5.21%</div>
+                </div>
+                <div class="card-value mono" id="stockBondRatio">--.--%</div>
+                <div class="card-change change-up">
+                    <span>A股有吸引力</span>
+                </div>
+                <div class="card-footer mono">
+                    1/PE - 国债收益率
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">房金比</div>
+                    <div class="card-badge badge-down">极低</div>
+                </div>
+                <div class="card-value mono" id="houseGoldRatio">--</div>
+                <div class="card-change change-down">
+                    <span>历史低位</span>
+                </div>
+                <div class="card-footer mono">
+                    克黄金/平米
+                </div>
+            </div>
+
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">金铜比</div>
+                    <div class="card-badge">观望</div>
+                </div>
+                <div class="card-value mono" id="goldCopperRatio">--</div>
+                <div class="card-change change-neutral">
+                    <span>避险情绪</span>
+                </div>
+                <div class="card-footer mono">
+                    黄金/铜价格比
+                </div>
+            </div>
+        </section>
+
+        <!-- 触发信号 -->
+        <section id="signals" style="margin-bottom: 32px;">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-title">三大触发信号监测</div>
                 </div>
                 
-                <div style="margin-top: 20px;">
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding: 12px; background: var(--bg-secondary); border-radius: 6px;">
-                        <span style="color: var(--color-up);">✓</span>
-                        <span>研究框架设计</span>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding: 12px; background: var(--bg-secondary); border-radius: 6px;">
-                        <span style="color: var(--color-up);">✓</span>
-                        <span>数据源确定</span>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding: 12px; background: var(--bg-secondary); border-radius: 6px; opacity: 0.5;">
-                        <span>○</span>
-                        <span>数据采集系统搭建</span>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding: 12px; background: var(--bg-secondary); border-radius: 6px; opacity: 0.5;">
-                        <span>○</span>
-                        <span>策略回测</span>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-secondary); border-radius: 6px; opacity: 0.5;">
-                        <span>○</span>
-                        <span>可视化看板</span>
+                <div style="padding: 24px;">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                        <!-- 信号1 -->
+                        <div style="padding: 24px; background: var(--bg-secondary); border-radius: 8px; border: 2px solid var(--border-color);" id="signal1-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <div style="font-size: 12px; color: var(--text-muted);">信号A</div>
+                                <div class="signal-tag signal-hold" id="signal1-status">观望中</div>
+                            </div>
+                            <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">PPI同比转正</div>
+                            <div style="font-size: 32px; font-weight: 700; color: var(--color-gold); margin-bottom: 8px;" id="ppiValue">-1.4%</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">
+                                当前: -1.4% | 阈值: >0%
+                            </div>
+                            <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+                                <div style="font-size: 11px; color: var(--text-muted);">触发操作</div>
+                                <div style="font-size: 12px; margin-top: 4px;">国债→A股（顺周期）</div>
+                            </div>
+                        </div>
+
+                        <!-- 信号2 -->
+                        <div style="padding: 24px; background: var(--bg-secondary); border-radius: 8px; border: 2px solid var(--border-color);" id="signal2-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <div style="font-size: 12px; color: var(--text-muted);">信号B</div>
+                                <div class="signal-tag signal-hold" id="signal2-status">观望中</div>
+                            </div>
+                            <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">PMI连续2月>50%</div>
+                            <div style="font-size: 32px; font-weight: 700; color: var(--color-gold); margin-bottom: 8px;" id="pmiValue">49.0%</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">
+                                当前: 49.0% | 连续: 0月
+                            </div>
+                            <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+                                <div style="font-size: 11px; color: var(--text-muted);">触发操作</div>
+                                <div style="font-size: 12px; margin-top: 4px;">降低防御性资产</div>
+                            </div>
+                        </div>
+
+                        <!-- 信号3 -->
+                        <div style="padding: 24px; background: var(--bg-secondary); border-radius: 8px; border: 2px solid var(--border-color);" id="signal3-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <div style="font-size: 12px; color: var(--text-muted);">信号C</div>
+                                <div class="signal-tag signal-hold" id="signal3-status">观望中</div>
+                            </div>
+                            <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">国债收益率>2.8%</div>
+                            <div style="font-size: 32px; font-weight: 700; color: var(--color-gold); margin-bottom: 8px;" id="yieldValue">2.27%</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">
+                                当前: 2.27% | 阈值: >2.8%
+                            </div>
+                            <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+                                <div style="font-size: 11px; color: var(--text-muted);">触发操作</div>
+                                <div style="font-size: 12px; margin-top: 4px;">加仓长债+警惕黄金</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <!-- 配置建议 -->
+        <section id="allocation">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-title">当前资产配置建议</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">基于当前周期定位与信号状态</div>
+                </div>
+                
+                <div style="padding: 24px;">
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;">
+                        <div style="text-align: center; padding: 20px; background: var(--bg-secondary); border-radius: 8px;">
+                            <div style="font-size: 24px; margin-bottom: 8px;">🥇</div>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">黄金</div>
+                            <div style="font-size: 24px; font-weight: 700; color: var(--color-gold);">25-30%</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">持有，不加仓</div>
+                        </div>
+                        <div style="text-align: center; padding: 20px; background: var(--bg-secondary); border-radius: 8px;">
+                            <div style="font-size: 24px; margin-bottom: 8px;">📜</div>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">30年国债</div>
+                            <div style="font-size: 24px; font-weight: 700; color: var(--color-gold);">20-25%</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">持有，不加仓</div>
+                        </div>
+                        <div style="text-align: center; padding: 20px; background: var(--bg-secondary); border-radius: 8px;">
+                            <div style="font-size: 24px; margin-bottom: 8px;">📈</div>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">沪深300</div>
+                            <div style="font-size: 24px; font-weight: 700; color: var(--color-gold);">25-30%</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">持有，等待信号</div>
+                        </div>
+                        <div style="text-align: center; padding: 20px; background: var(--bg-secondary); border-radius: 8px;">
+                            <div style="font-size: 24px; margin-bottom: 8px;">💰</div>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">现金</div>
+                            <div style="font-size: 24px; font-weight: 700; color: var(--color-gold);">15-20%</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">保留子弹</div>
+                        </div>
+                        <div style="text-align: center; padding: 20px; background: var(--bg-secondary); border-radius: 8px; opacity: 0.6;">
+                            <div style="font-size: 24px; margin-bottom: 8px;">🏠</div>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">房产</div>
+                            <div style="font-size: 24px; font-weight: 700; color: var(--text-muted);">不增持</div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">流动性差</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 24px; padding: 16px; background: rgba(255, 215, 0, 0.1); border: 1px solid var(--color-gold); border-radius: 8px;">
+                        <div style="font-size: 12px; color: var(--color-gold); margin-bottom: 8px;">💡 核心逻辑</div>
+                        <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+                            当前处于"宽货币+紧信用"的衰退底部象限。建议保持防御性配置，黄金和长期国债作为底仓，保留现金等待PPI转正信号。
+                            一旦PMI连续2月站稳50%且PPI转正，执行轮换：降低国债和黄金仓位，加仓A股顺周期板块。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
+    <script src="js/rotation-data.js"></script>
     <script>
         function updateTime() {
             const now = new Date();
@@ -121,6 +329,10 @@
         }
         setInterval(updateTime, 1000);
         updateTime();
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
     </script>
 </body>
 </html>
