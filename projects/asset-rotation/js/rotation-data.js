@@ -186,5 +186,151 @@ function updateSignalStatus() {
     }
 }
 
+// 检查是否需要更新宏观数据
+function checkDataUpdateNeeded() {
+    const today = new Date();
+    const currentDay = today.getDate();
+    
+    // 获取上次更新日期（从localStorage或默认值）
+    const lastUpdateStr = localStorage.getItem('macroDataLastUpdate');
+    let lastUpdate = lastUpdateStr ? new Date(lastUpdateStr) : new Date('2026-03-01');
+    
+    const daysSinceUpdate = Math.floor((today - lastUpdate) / (1000 * 60 * 60 * 24));
+    
+    // 如果距离上次更新超过25天，或者今天是每月的10-20号之间
+    const isUpdateWindow = currentDay >= 10 && currentDay <= 20;
+    const needsUpdate = daysSinceUpdate >= 25 || (isUpdateWindow && daysSinceUpdate >= 20);
+    
+    // 显示或隐藏提醒
+    const alertSection = document.getElementById('dataAlert');
+    if (alertSection) {
+        alertSection.style.display = needsUpdate ? 'block' : 'none';
+        
+        if (needsUpdate) {
+            // 更新状态显示
+            const lastMonth = lastUpdate.toISOString().slice(0, 7); // YYYY-MM
+            const currentMonth = today.toISOString().slice(0, 7);
+            
+            // 检查各项数据状态（简化版，实际应该从数据文件读取）
+            const pmiStatus = document.getElementById('pmiStatus');
+            const ppiStatus = document.getElementById('ppiStatus');
+            const cpiStatus = document.getElementById('cpiStatus');
+            const socialStatus = document.getElementById('socialStatus');
+            
+            if (lastMonth < currentMonth) {
+                // 需要更新本月数据
+                if (pmiStatus) pmiStatus.textContent = '待更新';
+                if (ppiStatus) ppiStatus.textContent = '待更新';
+                if (cpiStatus) cpiStatus.textContent = '待更新';
+                if (socialStatus) socialStatus.textContent = '待更新';
+            }
+        }
+    }
+}
+
+// 打开数据更新模态框
+function openDataUpdateModal() {
+    const modal = document.getElementById('updateModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        // 设置默认月份为当前月份
+        const monthInput = document.getElementById('dataMonth');
+        if (monthInput) {
+            const today = new Date();
+            monthInput.value = today.toISOString().slice(0, 7);
+        }
+    }
+}
+
+// 关闭数据更新模态框
+function closeDataUpdateModal() {
+    const modal = document.getElementById('updateModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// 提交宏观数据
+function submitMacroData() {
+    const month = document.getElementById('dataMonth').value;
+    const pmi = document.getElementById('inputPMI').value;
+    const ppi = document.getElementById('inputPPI').value;
+    const cpi = document.getElementById('inputCPI').value;
+    const social = document.getElementById('inputSocial').value;
+    const note = document.getElementById('inputNote').value;
+    
+    if (!month) {
+        alert('请选择数据月份');
+        return;
+    }
+    
+    // 构建数据对象
+    const macroData = {
+        month: month,
+        pmi: pmi ? parseFloat(pmi) : null,
+        ppi: ppi ? parseFloat(ppi) : null,
+        cpi: cpi ? parseFloat(cpi) : null,
+        social_financing: social ? parseFloat(social) : null,
+        note: note,
+        updated_at: new Date().toISOString()
+    };
+    
+    // 保存到localStorage（临时存储）
+    let allMacroData = JSON.parse(localStorage.getItem('macroDataHistory') || '[]');
+    
+    // 检查是否已存在该月份数据
+    const existingIndex = allMacroData.findIndex(d => d.month === month);
+    if (existingIndex >= 0) {
+        allMacroData[existingIndex] = macroData;
+    } else {
+        allMacroData.push(macroData);
+    }
+    
+    localStorage.setItem('macroDataHistory', JSON.stringify(allMacroData));
+    localStorage.setItem('macroDataLastUpdate', new Date().toISOString());
+    
+    // 生成JSON文件内容
+    const jsonContent = JSON.stringify(allMacroData, null, 2);
+    
+    // 创建下载链接
+    const blob = new Blob([jsonContent], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `macro_data_${month}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    alert(`数据已保存！\n\n请将下载的JSON文件上传到GitHub仓库的 projects/asset-rotation/data/ 目录下，并提交更新。\n\n上传路径：invest-site/projects/asset-rotation/data/macro_data.json`);
+    
+    closeDataUpdateModal();
+    checkDataUpdateNeeded(); // 重新检查更新状态
+    
+    // 刷新页面以显示新数据
+    setTimeout(() => location.reload(), 1000);
+}
+
+// 点击模态框外部关闭
+window.onclick = function(event) {
+    const modal = document.getElementById('updateModal');
+    if (event.target === modal) {
+        closeDataUpdateModal();
+    }
+}
+
+// 暴露函数到全局作用域（供HTML onclick调用）
+window.openDataUpdateModal = openDataUpdateModal;
+window.closeDataUpdateModal = closeDataUpdateModal;
+window.submitMacroData = submitMacroData;
+window.checkDataUpdateNeeded = checkDataUpdateNeeded;
+
 // 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', function() {
+    init();
+    checkDataUpdateNeeded();
+    
+    // 每天检查一次是否需要更新
+    setInterval(checkDataUpdateNeeded, 24 * 60 * 60 * 1000);
+});
