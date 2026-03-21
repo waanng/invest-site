@@ -3,10 +3,31 @@
 Gold IV Data Fetcher for GitHub Actions
 """
 import yfinance as yf
+import pandas as pd
 import json
 import os
 from datetime import datetime, timedelta
 import time
+
+def fetch_with_retry(ticker, period="5d", max_retries=3, initial_delay=5):
+    """Fetch data with retry and exponential backoff"""
+    for attempt in range(max_retries):
+        try:
+            data = ticker.history(period=period)
+            if not data.empty:
+                return data
+            if attempt < max_retries - 1:
+                delay = initial_delay * (2 ** attempt)
+                print(f"Retry {attempt + 1}/{max_retries} after {delay}s delay")
+                time.sleep(delay)
+        except Exception as e:
+            if attempt < max_retries - 1:
+                delay = initial_delay * (2 ** attempt)
+                print(f"Error: {e}. Retry {attempt + 1}/{max_retries} after {delay}s")
+                time.sleep(delay)
+            else:
+                raise
+    return pd.DataFrame()
 
 def fetch_data():
     """Fetch gold and GVZ data"""
@@ -15,8 +36,8 @@ def fetch_data():
         
         # Fetch gold data
         gold = yf.Ticker("GC=F")
-        time.sleep(1)
-        gold_hist = gold.history(period="5d")
+        time.sleep(2)
+        gold_hist = fetch_with_retry(gold, period="5d")
         
         if gold_hist.empty:
             print("No gold data available")
@@ -35,8 +56,8 @@ def fetch_data():
         
         # Fetch GVZ
         gvz = yf.Ticker("^GVZ")
-        time.sleep(1)
-        gvz_hist = gvz.history(period="5d")
+        time.sleep(2)
+        gvz_hist = fetch_with_retry(gvz, period="5d")
         
         gvz_data = {}
         if not gvz_hist.empty:
