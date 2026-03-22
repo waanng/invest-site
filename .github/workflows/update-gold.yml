@@ -14,22 +14,51 @@ jobs:
     
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: '3.11'
+        
+    - name: Cache pip dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
         
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install yfinance pandas
+        pip install yfinance pandas requests
         
     - name: Fetch gold data
+      id: fetch
       run: |
         cd projects/gold-iv
         python scripts/fetch_data.py
+      continue-on-error: true
+      
+    - name: Fetch from backup source (if primary failed)
+      if: steps.fetch.outcome == 'failure'
+      env:
+        ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+      run: |
+        cd projects/gold-iv
+        python scripts/fetch_data_backup.py
+      continue-on-error: true
+        
+    - name: Check data file
+      run: |
+        if [ -f "projects/gold-iv/data/gold_data.json" ]; then
+          echo "Data file exists"
+          cat projects/gold-iv/data/gold_data.json | head -20
+        else
+          echo "ERROR: Data file not found"
+          exit 1
+        fi
         
     - name: Commit and push changes
       run: |
