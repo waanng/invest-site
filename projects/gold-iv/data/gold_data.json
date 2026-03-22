@@ -6,5 +6,13 @@
     "gvz": 31.05,
     "gvz_change_pct": 5.54,
     "updated_at": "2026-03-20T02:33:26.325677"
+  },
+  {
+    "date": "2026-03-20",
+    "gold_price": 4574.9,
+    "gold_change_pct": -0.56,
+    "gvz": 35.25,
+    "gvz_change_pct": 13.53,
+    "updated_at": "2026-03-22T00:46:43.084289"
   }
 ]
