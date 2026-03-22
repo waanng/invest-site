@@ -1,0 +1,19 @@
+{
+  "posts": [
+    {
+      "id": "building-investment-research-system",
+      "title": "从零构建个人投资研究系统：黄金波动率追踪实战",
+      "summary": "分享我如何从零开始搭建一个完整的黄金期权隐含波动率追踪系统，包括数据指标体系设计、技术架构选型、GitHub Actions自动化，以及踩坑记录。适合有数据背景的投资者参考。",
+      "date": "2026-03-22",
+      "author": "王安",
+      "authorTitle": "数据与AI从业者",
+      "readTime": "15分钟",
+      "tags": ["投资研究", "技术分析", "黄金"],
+      "category": "tech",
+      "featured": true,
+      "url": "posts/building-investment-research-system.html"
+    }
+  ],
+  "totalPosts": 1,
+  "lastUpdated": "2026-03-22"
+}

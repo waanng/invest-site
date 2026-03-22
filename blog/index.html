@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投资博客 - Investment Blog</title>
+    <link rel="stylesheet" href="../assets/css/terminal.css">
+    <link rel="stylesheet" href="../assets/css/blog.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部状态栏 -->
+    <header class="top-bar">
+        <div class="brand">
+            <div class="brand-icon" style="background: linear-gradient(135deg, #58a6ff, #7bb3ff);">IR</div>
+            <div>
+                <div class="brand-text">INVEST RESEARCH</div>
+                <div class="brand-sub">投资博客</div>
+            </div>
+        </div>
+        <div class="top-status">
+            <div class="status-item">
+                <span class="status-indicator"></span>
+                <span class="mono">BLOG ACTIVE</span>
+            </div>
+            <div class="status-item mono" id="currentTime">--:--:--</div>
+        </div>
+    </header>
+
+    <!-- 左侧导航 -->
+    <aside class="sidebar">
+        <nav class="nav-section">
+            <div class="nav-title">Dashboard</div>
+            <ul class="nav-list">
+                <li class="nav-item" onclick="location.href='../index.html'">
+                    <span class="nav-icon">◈</span>
+                    <span class="nav-text">研究总览</span>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-title">Research Projects</div>
+            <ul class="nav-list">
+                <li class="nav-item" onclick="location.href='../projects/gold-iv/index.html'">
+                    <span class="nav-icon">◉</span>
+                    <span class="nav-text">黄金期权IV</span>
+                    <span class="nav-badge">VOL</span>
+                </li>
+                <li class="nav-item" onclick="location.href='../projects/asset-rotation/index.html'">
+                    <span class="nav-icon">◉</span>
+                    <span class="nav-text">资产轮动</span>
+                    <span class="nav-badge">ROT</span>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-title">Content</div>
+            <ul class="nav-list">
+                <li class="nav-item active" onclick="location.href='index.html'">
+                    <span class="nav-icon">📝</span>
+                    <span class="nav-text">投资博客</span>
+                    <span class="nav-badge">NEW</span>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">
+                <span class="page-title-icon" style="color: var(--color-accent);">📝</span>
+                投资博客
+            </h1>
+            <p class="page-desc">
+                记录投资思考、研究方法和市场观察。从数据到洞察，从理论到实践。
+            </p>
+        </div>
+
+        <!-- 博客头部信息 -->
+        <div class="blog-header">
+            <h2>📚 思考与记录</h2>
+            <p>
+                这里记录我在投资研究过程中的思考、方法和心得。每一篇文章都是基于真实的数据分析和实践经验，
+                希望能给同样在投资路上探索的朋友一些参考。
+            </p>
+            <div class="blog-stats">
+                <div class="blog-stat-item">
+                    <span>文章数：</span>
+                    <span class="mono" id="totalPosts">--</span>
+                </div>
+                <div class="blog-stat-item">
+                    <span>更新频率：</span>
+                    <span>不定期更新</span>
+                </div>
+                <div class="blog-stat-item">
+                    <span>最后更新：</span>
+                    <span class="mono" id="lastUpdated">--</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文章列表 -->
+        <div id="blogList" class="blog-list">
+            <!-- 文章将通过JavaScript动态加载 -->
+        </div>
+    </main>
+
+    <script>
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('zh-CN', { 
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('currentTime').textContent = timeStr;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // 加载博客数据
+        async function loadBlogData() {
+            try {
+                const response = await fetch('data/blog-data.json');
+                const data = await response.json();
+                
+                // 更新统计信息
+                document.getElementById('totalPosts').textContent = data.totalPosts;
+                document.getElementById('lastUpdated').textContent = data.lastUpdated;
+                
+                // 渲染文章列表
+                renderBlogList(data.posts);
+            } catch (error) {
+                console.error('Failed to load blog data:', error);
+                document.getElementById('blogList').innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        <div style="font-size: 48px; margin-bottom: 16px;">📭</div>
+                        <div>暂无文章</div>
+                    </div>
+                `;
+            }
+        }
+
+        // 渲染文章列表
+        function renderBlogList(posts) {
+            const blogList = document.getElementById('blogList');
+            
+            if (posts.length === 0) {
+                blogList.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        <div style="font-size: 48px; margin-bottom: 16px;">📭</div>
+                        <div>暂无文章</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            blogList.innerHTML = posts.map(post => `
+                <article class="blog-item" onclick="location.href='${post.url}'">
+                    <div class="blog-item-header">
+                        <div style="flex: 1;">
+                            <h3 class="blog-item-title">${post.title}</h3>
+                            <p class="blog-item-summary">${post.summary}</p>
+                        </div>
+                        ${post.featured ? '<span style="background: linear-gradient(135deg, #ffd700, #ffed4e); color: #000; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600;">精选</span>' : ''}
+                    </div>
+                    <div class="blog-item-meta">
+                        <div class="blog-item-date">
+                            <span>📅</span>
+                            <span>${post.date}</span>
+                        </div>
+                        <div class="blog-item-tags">
+                            ${post.tags.map(tag => `<span class="blog-tag ${post.category}">${tag}</span>`).join('')}
+                        </div>
+                        <div class="blog-item-readtime">
+                            <span>⏱️ ${post.readTime}</span>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // 页面加载完成后加载数据
+        document.addEventListener('DOMContentLoaded', loadBlogData);
+    </script>
+</body>
+</html>
