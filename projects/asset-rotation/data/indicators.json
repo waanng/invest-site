@@ -1,7 +1,7 @@
 {
-  "date": "2026-03-22",
-  "stock_bond_ratio": 8.25,
-  "gold_copper_ratio": null,
-  "bond_yield": 0.08,
-  "calculation_time": "2026-03-22T13:47:50.638279"
+  "date": "2026-03-23",
+  "stock_bond_ratio": 8.29,
+  "gold_copper_ratio": 813.64,
+  "bond_yield": 0.04,
+  "calculation_time": "2026-03-23T13:59:20.206892"
 }
