@@ -112,19 +112,24 @@ def main():
         
         if existing_idx is not None:
             existing_data[existing_idx] = new_data
-            print(f"Updated data for {new_data['date']}")
+            print(f"✓ Updated data for {new_data['date']}")
         else:
             existing_data.append(new_data)
             existing_data.sort(key=lambda x: x['date'])
-            print(f"Added new data for {new_data['date']}")
+            print(f"✓ Added new data for {new_data['date']}")
         
         # Save
         with open(data_file, 'w') as f:
             json.dump(existing_data, f, indent=2)
         
-        print(f"Total records: {len(existing_data)}")
+        print(f"✓ Total records: {len(existing_data)}")
+        print(f"✓ Data fetch SUCCESS")
+        return True
     else:
-        print("Failed to fetch data")
+        print("✗ Failed to fetch data")
+        return False
 
 if __name__ == "__main__":
-    main()
+    import sys
+    success = main()
+    sys.exit(0 if success else 1)

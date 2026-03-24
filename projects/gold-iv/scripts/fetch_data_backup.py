@@ -46,52 +46,59 @@ def fetch_from_alphavantage():
     return None
 
 def main():
-    """主函数：先尝试 Yahoo Finance，失败则切换到 Alpha Vantage"""
-    # 先尝试 Yahoo Finance
-    try:
-        import subprocess
-        result = subprocess.run(
-            ['python', 'scripts/fetch_data.py'],
-            capture_output=True,
-            text=True,
-            cwd='/Users/waanng/Documents/Playground/invest-site/projects/gold-iv'
-        )
-        
-        if 'success' in result.stdout.lower() or result.returncode == 0:
-            print("Yahoo Finance data fetch successful")
-            return
-    except Exception as e:
-        print(f"Yahoo Finance failed: {e}")
+    """主函数：使用 Alpha Vantage 获取数据"""
+    print("=== Starting Alpha Vantage backup fetch ===")
     
-    # 切换到 Alpha Vantage
-    print("Switching to Alpha Vantage backup...")
+    # 检查 API Key
+    if not ALPHA_VANTAGE_API_KEY:
+        print("ERROR: ALPHA_VANTAGE_API_KEY environment variable not set")
+        return False
+    
+    # 获取数据
+    print("Fetching data from Alpha Vantage...")
     data = fetch_from_alphavantage()
     
-    if data:
-        # 保存数据逻辑
-        data_file = 'data/gold_data.json'
-        existing_data = []
-        
-        if os.path.exists(data_file):
+    if not data:
+        print("✗ Failed to fetch data from Alpha Vantage")
+        return False
+    
+    # 保存数据
+    print(f"✓ Fetched data for {data['date']}")
+    data_file = 'data/gold_data.json'
+    existing_data = []
+    
+    if os.path.exists(data_file):
+        try:
             with open(data_file, 'r') as f:
                 existing_data = json.load(f)
-        
-        # 更新或追加
-        existing_idx = next((i for i, d in enumerate(existing_data) 
-                            if d['date'] == data['date']), None)
-        
-        if existing_idx is not None:
-            existing_data[existing_idx] = data
-        else:
-            existing_data.append(data)
-            existing_data.sort(key=lambda x: x['date'])
-        
+            print(f"✓ Loaded {len(existing_data)} existing records")
+        except Exception as e:
+            print(f"Warning: Could not load existing data: {e}")
+            existing_data = []
+    
+    # 更新或追加
+    existing_idx = next((i for i, d in enumerate(existing_data) 
+                        if d['date'] == data['date']), None)
+    
+    if existing_idx is not None:
+        existing_data[existing_idx] = data
+        print(f"✓ Updated existing record for {data['date']}")
+    else:
+        existing_data.append(data)
+        existing_data.sort(key=lambda x: x['date'])
+        print(f"✓ Added new record for {data['date']}")
+    
+    # 保存
+    try:
         with open(data_file, 'w') as f:
             json.dump(existing_data, f, indent=2)
-        
-        print(f"✓ Alpha Vantage data saved: {data['date']}")
-    else:
-        print("✗ All data sources failed")
+        print(f"✓ Data saved successfully. Total records: {len(existing_data)}")
+        return True
+    except Exception as e:
+        print(f"✗ Failed to save data: {e}")
+        return False
 
 if __name__ == "__main__":
-    main()
+    import sys
+    success = main()
+    sys.exit(0 if success else 1)

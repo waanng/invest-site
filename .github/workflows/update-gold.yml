@@ -7,6 +7,14 @@ on:
     - cron: '30 13 * * *'
   
   workflow_dispatch:
+    inputs:
+      debug:
+        description: 'Enable debug mode'
+        required: false
+        default: 'false'
+
+env:
+  PYTHONUNBUFFERED: 1
 
 jobs:
   update-data:
@@ -15,6 +23,9 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
       
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -31,38 +42,93 @@ jobs:
         
     - name: Install dependencies
       run: |
+        echo "=== Installing Python dependencies ==="
         python -m pip install --upgrade pip
         pip install yfinance pandas requests
+        echo "=== Dependencies installed ==="
         
-    - name: Fetch gold data
-      id: fetch
+    - name: Debug info
+      if: github.event.inputs.debug == 'true'
       run: |
+        echo "=== Debug Mode Enabled ==="
+        echo "Current time: $(date)"
+        echo "Current UTC time: $(date -u)"
+        echo "Python version: $(python --version)"
+        echo "Working directory: $(pwd)"
+        ls -la projects/gold-iv/
+        
+    - name: Fetch gold data from Yahoo Finance
+      id: fetch_yahoo
+      run: |
+        echo "=== Starting Yahoo Finance data fetch ==="
         cd projects/gold-iv
         python scripts/fetch_data.py
-      continue-on-error: true
+        echo "=== Fetch completed with exit code: $? ==="
       
-    - name: Fetch from backup source (if primary failed)
-      if: steps.fetch.outcome == 'failure'
+    - name: Fetch from Alpha Vantage (if Yahoo failed)
+      id: fetch_alphavantage
+      if: failure() && steps.fetch_yahoo.outcome == 'failure'
       env:
         ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
       run: |
+        echo "=== Yahoo Finance failed, trying Alpha Vantage ==="
         cd projects/gold-iv
         python scripts/fetch_data_backup.py
-      continue-on-error: true
-        
-    - name: Check data file
+        echo "=== Backup fetch completed ==="
+      
+    - name: Verify data file
       run: |
+        echo "=== Verifying data file ==="
         if [ -f "projects/gold-iv/data/gold_data.json" ]; then
-          echo "Data file exists"
-          cat projects/gold-iv/data/gold_data.json | head -20
+          echo "✓ Data file exists"
+          echo "=== Last 5 records ==="
+          cat projects/gold-iv/data/gold_data.json | python -m json.tool | tail -30
+          echo "=== File size ==="
+          ls -lh projects/gold-iv/data/gold_data.json
         else
-          echo "ERROR: Data file not found"
+          echo "✗ ERROR: Data file not found!"
           exit 1
         fi
         
-    - name: Commit and push changes
+    - name: Check for data changes
+      id: check_changes
       run: |
+        echo "=== Checking for data changes ==="
+        git status
+        if git diff --quiet projects/gold-iv/data/; then
+          echo "✗ No data changes detected"
+          echo "has_changes=false" >> $GITHUB_OUTPUT
+        else
+          echo "✓ Data changes detected"
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+          echo "=== Changed files ==="
+          git diff --name-only projects/gold-iv/data/
+        fi
+        
+    - name: Commit and push changes
+      if: steps.check_changes.outputs.has_changes == 'true'
+      run: |
+        echo "=== Committing changes ==="
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add projects/gold-iv/data/
-        git diff --staged --quiet || (git commit -m "Update gold IV data: $(date +'%Y-%m-%d')" && git push)
+        git commit -m "Update gold IV data: $(date +'%Y-%m-%d')"
+        git push
+        echo "✓ Changes pushed successfully"
+        
+    - name: Notify on success
+      if: success() && steps.check_changes.outputs.has_changes == 'true'
+      run: |
+        echo "✅ SUCCESS: Gold data updated successfully!"
+        echo "Date: $(date +'%Y-%m-%d')"
+        
+    - name: Notify on failure
+      if: failure()
+      run: |
+        echo "❌ FAILURE: Data update failed!"
+        echo "Please check the logs above for details."
+        echo "Common issues:"
+        echo "  - Yahoo Finance rate limiting"
+        echo "  - Alpha Vantage API key not set"
+        echo "  - Network connectivity issues"
+        exit 1
