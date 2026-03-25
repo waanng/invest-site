@@ -3,7 +3,6 @@ name: Update Gold IV Data
 on:
   schedule:
     # 每天 UTC 13:30 运行（北京时间 21:30）
-    # 黄金期货 20:00 收盘，21:30 数据已稳定
     - cron: '30 13 * * *'
   
   workflow_dispatch:
@@ -44,7 +43,7 @@ jobs:
       run: |
         echo "=== Installing Python dependencies ==="
         python -m pip install --upgrade pip
-        pip install yfinance pandas requests
+        pip install pandas requests
         echo "=== Dependencies installed ==="
         
     - name: Debug info
@@ -57,24 +56,15 @@ jobs:
         echo "Working directory: $(pwd)"
         ls -la projects/gold-iv/
         
-    - name: Fetch gold data from Yahoo Finance
-      id: fetch_yahoo
-      run: |
-        echo "=== Starting Yahoo Finance data fetch ==="
-        cd projects/gold-iv
-        python scripts/fetch_data.py
-        echo "=== Fetch completed with exit code: $? ==="
-      
-    - name: Fetch from Alpha Vantage (if Yahoo failed)
+    - name: Fetch gold data from Alpha Vantage
       id: fetch_alphavantage
-      if: failure() && steps.fetch_yahoo.outcome == 'failure'
       env:
         ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
       run: |
-        echo "=== Yahoo Finance failed, trying Alpha Vantage ==="
+        echo "=== Starting Alpha Vantage data fetch ==="
         cd projects/gold-iv
-        python scripts/fetch_data_backup.py
-        echo "=== Backup fetch completed ==="
+        python scripts/fetch_data_alphavantage.py
+        echo "=== Fetch completed ==="
       
     - name: Verify data file
       run: |
@@ -112,7 +102,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add projects/gold-iv/data/
-        git commit -m "Update gold IV data: $(date +'%Y-%m-%d')"
+        git commit -m "Update gold IV data: $(date +'%Y-%m-%d') [Alpha Vantage]"
         git push
         echo "✓ Changes pushed successfully"
         
@@ -121,6 +111,7 @@ jobs:
       run: |
         echo "✅ SUCCESS: Gold data updated successfully!"
         echo "Date: $(date +'%Y-%m-%d')"
+        echo "Source: Alpha Vantage"
         
     - name: Notify on failure
       if: failure()
@@ -128,7 +119,7 @@ jobs:
         echo "❌ FAILURE: Data update failed!"
         echo "Please check the logs above for details."
         echo "Common issues:"
-        echo "  - Yahoo Finance rate limiting"
-        echo "  - Alpha Vantage API key not set"
+        echo "  - Alpha Vantage API key not set or invalid"
+        echo "  - API rate limit exceeded (25 calls/day)"
         echo "  - Network connectivity issues"
         exit 1
