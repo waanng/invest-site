@@ -1,157 +1,106 @@
 #!/usr/bin/env python3
 """
-Gold IV Data Fetcher - 使用 Alpha Vantage 作为主要数据源
+Gold IV Data Fetcher - 使用 Alpha Vantage 免费版 API
+使用 GLD ETF 作为黄金价格代理（免费版支持）
 """
 import json
 import os
 from datetime import datetime
 import requests
-import pandas as pd
 
 # 从环境变量获取 API Key
 ALPHA_VANTAGE_API_KEY = os.environ.get('ALPHA_VANTAGE_API_KEY', '')
 
-def fetch_gold_from_alphavantage():
+def fetch_gld_data():
     """
-    使用 Alpha Vantage 获取黄金价格数据
-    
-    免费版限制：25次/天
+    使用 Alpha Vantage 获取 GLD (黄金ETF) 数据
+    GLD 价格与黄金价格高度相关，可作为代理
     """
     if not ALPHA_VANTAGE_API_KEY:
         print("ERROR: ALPHA_VANTAGE_API_KEY not set")
         return None
     
     try:
-        print("Fetching gold data from Alpha Vantage...")
+        print("Fetching GLD data from Alpha Vantage...")
         
-        # 方法1: 使用 XAUUSD 商品数据
-        # 注意：Alpha Vantage 免费版对商品数据有延迟，我们使用外汇对近似
-        # 或者使用其他方式
+        # 使用 TIME_SERIES_DAILY 获取 GLD 数据
+        url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=GLD&apikey={ALPHA_VANTAGE_API_KEY}"
         
-        # 使用 TIME_SERIES_DAILY 获取黄金ETF数据（如GLD）作为代理
-        # 或者使用 CURRENCY_EXCHANGE_RATE 获取 XAU/USD
+        print(f"API URL: {url.replace(ALPHA_VANTAGE_API_KEY, '***')}")
         
-        # 尝试获取 XAU/USD 汇率
-        url = f"https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=XAU&to_currency=USD&apikey={ALPHA_VANTAGE_API_KEY}"
         response = requests.get(url, timeout=30)
+        response.raise_for_status()
         data = response.json()
         
-        if 'Realtime Currency Exchange Rate' in data:
-            exchange_data = data['Realtime Currency Exchange Rate']
-            gold_price = float(exchange_data['5. Exchange Rate'])
-            
-            print(f"✓ Gold price fetched: ${gold_price:.2f}")
-            
-            # 获取历史数据计算涨跌幅（需要另一次API调用）
-            # 使用 TIME_SERIES_DAILY 获取前几天的数据
-            hist_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=GLD&apikey={ALPHA_VANTAGE_API_KEY}"
-            hist_response = requests.get(hist_url, timeout=30)
-            hist_data = hist_response.json()
-            
-            if 'Time Series (Daily)' in hist_data:
-                time_series = hist_data['Time Series (Daily)']
-                dates = sorted(time_series.keys(), reverse=True)
-                
-                if len(dates) >= 2:
-                    latest_date = dates[0]
-                    prev_date = dates[1]
-                    
-                    latest_price = float(time_series[latest_date]['4. close'])
-                    prev_price = float(time_series[prev_date]['4. close'])
-                    
-                    # 使用黄金ETF(GLD)的涨跌幅来估算
-                    gold_change_pct = ((latest_price - prev_price) / prev_price) * 100
-                    
-                    return {
-                        'date': latest_date,
-                        'gold_price': round(gold_price, 2),
-                        'gold_change_pct': round(gold_change_pct, 2),
-                        'updated_at': datetime.now().isoformat(),
-                        'source': 'alphavantage_xau'
-                    }
-            
-            # 如果无法获取历史数据，只返回当前价格
-            return {
-                'date': datetime.now().strftime('%Y-%m-%d'),
-                'gold_price': round(gold_price, 2),
-                'gold_change_pct': 0.0,
-                'updated_at': datetime.now().isoformat(),
-                'source': 'alphavantage_xau'
-            }
-        
-        else:
-            print(f"Error: Unexpected API response: {data}")
+        # 检查错误信息
+        if 'Error Message' in data:
+            print(f"API Error: {data['Error Message']}")
             return None
-            
+        
+        if 'Note' in data:
+            print(f"API Note: {data['Note']}")
+            return None
+        
+        if 'Time Series (Daily)' not in data:
+            print(f"Unexpected response: {data}")
+            return None
+        
+        time_series = data['Time Series (Daily)']
+        dates = sorted(time_series.keys(), reverse=True)
+        
+        if len(dates) < 1:
+            print("No data returned")
+            return None
+        
+        # 获取最新数据
+        latest_date = dates[0]
+        latest_data = time_series[latest_date]
+        
+        close_price = float(latest_data['4. close'])
+        
+        # 计算涨跌幅
+        if len(dates) >= 2:
+            prev_date = dates[1]
+            prev_close = float(time_series[prev_date]['4. close'])
+            change_pct = ((close_price - prev_close) / prev_close) * 100
+        else:
+            change_pct = 0.0
+        
+        # GLD 到黄金价格的转换系数（GLD 约等于 1/10 黄金价格）
+        gold_price = close_price * 10
+        
+        print(f"✓ GLD price: ${close_price:.2f}")
+        print(f"✓ Estimated gold price: ${gold_price:.2f}")
+        print(f"✓ Date: {latest_date}")
+        print(f"✓ Change: {change_pct:.2f}%")
+        
+        return {
+            'date': latest_date,
+            'gold_price': round(gold_price, 2),
+            'gold_change_pct': round(change_pct, 2),
+            'updated_at': datetime.now().isoformat(),
+            'source': 'alphavantage_gld'
+        }
+        
+    except requests.exceptions.Timeout:
+        print("ERROR: Request timeout")
+        return None
+    except requests.exceptions.RequestException as e:
+        print(f"ERROR: Request failed: {e}")
+        return None
     except Exception as e:
-        print(f"Error fetching from Alpha Vantage: {e}")
+        print(f"ERROR: {e}")
         return None
 
-def fetch_gold_from_alphavantage_v2():
-    """
-    备用方案：使用商品数据接口
-    """
-    try:
-        print("Trying Alpha Vantage commodity data...")
-        
-        # 使用商品数据接口
-        url = f"https://www.alphavantage.co/query?function=COMMODITY_INTERVAL&symbol=XAUUSD&interval=daily&apikey={ALPHA_VANTAGE_API_KEY}"
-        response = requests.get(url, timeout=30)
-        data = response.json()
-        
-        if 'data' in data and len(data['data']) > 0:
-            latest = data['data'][0]
-            gold_date = latest['date']
-            gold_price = float(latest['close'])
-            
-            # 计算涨跌幅
-            if len(data['data']) >= 2:
-                prev_price = float(data['data'][1]['close'])
-                change_pct = ((gold_price - prev_price) / prev_price) * 100
-            else:
-                change_pct = 0.0
-            
-            print(f"✓ Gold price: ${gold_price:.2f} on {gold_date}")
-            
-            return {
-                'date': gold_date,
-                'gold_price': round(gold_price, 2),
-                'gold_change_pct': round(change_pct, 2),
-                'updated_at': datetime.now().isoformat(),
-                'source': 'alphavantage_commodity'
-            }
-        else:
-            print(f"Error: No data in response: {data}")
-            return None
-            
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
-
-def fetch_data():
-    """
-    主函数：获取数据
-    优先使用 Alpha Vantage
-    """
+def main():
+    """主函数"""
     print("="*60)
-    print("Gold Data Fetcher - Alpha Vantage Edition")
+    print("Gold Data Fetcher - Alpha Vantage Edition (Free Tier)")
     print("="*60)
     print(f"Time: {datetime.now()}")
     print(f"API Key: {'✓ Set' if ALPHA_VANTAGE_API_KEY else '✗ Not set'}")
     print("="*60)
     
-    # 尝试方法1：商品数据接口
-    data = fetch_gold_from_alphavantage_v2()
-    
-    if data:
-        print("\n✓ SUCCESS: Data fetched from Alpha Vantage")
-        return data
-    
-    print("\n✗ FAILED: Could not fetch data")
-    return None
-
-def main():
-    """主函数"""
     # 确保数据目录存在
     os.makedirs('data', exist_ok=True)
     
@@ -169,7 +118,7 @@ def main():
             existing_data = []
     
     # 获取新数据
-    new_data = fetch_data()
+    new_data = fetch_gld_data()
     
     if new_data:
         # 检查是否已存在该日期的数据
