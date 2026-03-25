@@ -43,7 +43,7 @@ jobs:
       run: |
         echo "=== Installing Python dependencies ==="
         python -m pip install --upgrade pip
-        pip install pandas requests
+        pip install pandas requests yfinance
         echo "=== Dependencies installed ==="
         
     - name: Debug info
