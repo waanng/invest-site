@@ -12,11 +12,15 @@ from datetime import datetime
 import requests
 import yfinance as yf
 
+# 从环境变量获取 API Key
 ALPHA_VANTAGE_API_KEY = os.environ.get('ALPHA_VANTAGE_API_KEY', '')
+
+# 配置参数
 MAX_RETRIES = 3
-RETRY_DELAY = 5
+RETRY_DELAY = 5  # 秒
 
 def fetch_with_retry(url, max_retries=MAX_RETRIES, timeout=30):
+    """带指数退避的重试机制"""
     for attempt in range(max_retries):
         try:
             print(f"  尝试 {attempt + 1}/{max_retries}...")
@@ -41,6 +45,10 @@ def fetch_with_retry(url, max_retries=MAX_RETRIES, timeout=30):
     return None
 
 def fetch_gold_from_alphavantage():
+    """
+    使用 Alpha Vantage 获取黄金价格
+    免费版限制：25次/天
+    """
     if not ALPHA_VANTAGE_API_KEY:
         print("ERROR: ALPHA_VANTAGE_API_KEY not set")
         return None, "API_KEY_NOT_SET"
@@ -55,16 +63,19 @@ def fetch_gold_from_alphavantage():
         if data is None:
             return None, "REQUEST_FAILED"
         
+        # 检查错误信息
         if 'Error Message' in data:
             error_msg = data['Error Message']
             print(f"API Error: {error_msg}")
             return None, f"API_ERROR: {error_msg}"
         
+        # 检查限流提示
         if 'Note' in data:
             note = data['Note']
             print(f"API Rate Limit: {note}")
             return None, f"RATE_LIMIT: {note}"
         
+        # 检查信息提示（可能是限流或其他信息）
         if 'Information' in data:
             info = data['Information']
             print(f"API Information: {info}")
@@ -85,12 +96,14 @@ def fetch_gold_from_alphavantage():
         latest_data = time_series[latest_date]
         close_price = float(latest_data['4. close'])
         
+        # 计算涨跌幅
         if len(dates) >= 2:
             prev_close = float(time_series[dates[1]]['4. close'])
             change_pct = ((close_price - prev_close) / prev_close) * 100
         else:
             change_pct = 0.0
         
+        # GLD 到黄金价格的转换系数（GLD 约等于 1/10 黄金价格）
         gold_price = close_price * 10
         
         print(f"✓ Gold: ${gold_price:.2f} ({change_pct:+.2f}%) [{latest_date}]")
@@ -106,13 +119,17 @@ def fetch_gold_from_alphavantage():
         return None, f"EXCEPTION: {str(e)}"
 
 def fetch_gvz_from_yahoo():
+    """
+    使用 Yahoo Finance 获取 GVZ 数据
+    GVZ 调用频率低，通常不会触发限制
+    """
     max_retries = 3
     for attempt in range(max_retries):
         try:
             print(f"Fetching GVZ from Yahoo Finance (attempt {attempt + 1}/{max_retries})...")
             
             gvz = yf.Ticker("^GVZ")
-            time.sleep(1)
+            time.sleep(1)  # 短暂延迟避免限制
             
             hist = gvz.history(period="5d")
             
@@ -126,6 +143,7 @@ def fetch_gvz_from_yahoo():
             latest = hist.iloc[-1]
             gvz_date = hist.index[-1].strftime('%Y-%m-%d')
             
+            # 计算涨跌幅
             if len(hist) >= 2:
                 prev_close = float(hist.iloc[-2]['Close'])
             else:
@@ -151,6 +169,10 @@ def fetch_gvz_from_yahoo():
     return None, "ALL_RETRIES_FAILED"
 
 def fetch_data():
+    """
+    获取完整数据：黄金价格 + GVZ
+    即使部分失败，也返回可用数据
+    """
     print("="*60)
     print("Gold Data Fetcher - Dual Source Edition (Enhanced)")
     print("="*60)
@@ -160,18 +182,21 @@ def fetch_data():
     
     errors = []
     
+    # 获取黄金价格（带重试）
     gold_data, gold_error = fetch_gold_from_alphavantage()
     
     if gold_error:
         errors.append(f"Gold: {gold_error}")
         print(f"\n⚠️  Gold fetch failed: {gold_error}")
     
+    # 获取 GVZ 数据（带重试）
     gvz_data, gvz_error = fetch_gvz_from_yahoo()
     
     if gvz_error:
         errors.append(f"GVZ: {gvz_error}")
         print(f"⚠️  GVZ fetch failed: {gvz_error}")
     
+    # 判断结果
     if not gold_data and not gvz_data:
         print("\n" + "="*60)
         print("✗ ALL DATA SOURCES FAILED")
@@ -181,6 +206,7 @@ def fetch_data():
         print("="*60)
         return None, errors
     
+    # 合并数据（部分成功也返回）
     result = {
         'updated_at': datetime.now().isoformat(),
         'source': 'alphavantage+yahoo'
@@ -192,6 +218,7 @@ def fetch_data():
     if gvz_data:
         result.update(gvz_data)
     
+    # 如果没有获取到日期，使用今天
     if 'date' not in result:
         result['date'] = datetime.now().strftime('%Y-%m-%d')
     
@@ -207,8 +234,11 @@ def fetch_data():
     return result, errors if errors else None
 
 def main():
+    """主函数"""
+    # 确保数据目录存在
     os.makedirs('data', exist_ok=True)
     
+    # 加载现有数据
     data_file = 'data/gold_data.json'
     existing_data = []
     
@@ -221,9 +251,11 @@ def main():
             print(f"Warning: Could not load existing data: {e}")
             existing_data = []
     
+    # 获取新数据
     new_data, errors = fetch_data()
     
     if new_data:
+        # 检查是否已存在该日期的数据
         existing_idx = next((i for i, d in enumerate(existing_data) 
                             if d['date'] == new_data['date']), None)
         
@@ -235,6 +267,7 @@ def main():
             existing_data.sort(key=lambda x: x['date'])
             print(f"\n✓ Added new data for {new_data['date']}")
         
+        # 保存
         try:
             with open(data_file, 'w') as f:
                 json.dump(existing_data, f, indent=2)
@@ -242,6 +275,7 @@ def main():
             print(f"✓ Total records: {len(existing_data)}")
             print(f"✓ Data saved to {data_file}")
             
+            # 如果有错误但部分成功，返回成功但输出警告
             if errors:
                 print(f"\n⚠️  Warning: Partial success with {len(errors)} error(s)")
                 return True
