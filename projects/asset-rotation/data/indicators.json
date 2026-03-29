@@ -1,7 +1,7 @@
 {
-  "date": "2026-03-28",
+  "date": "2026-03-29",
   "stock_bond_ratio": 7.07,
-  "gold_copper_ratio": 821.66,
+  "gold_copper_ratio": null,
   "bond_yield": 1.26,
-  "calculation_time": "2026-03-28T13:49:20.898819"
+  "calculation_time": "2026-03-29T13:49:24.447566"
 }
