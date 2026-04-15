@@ -1,18 +1,14 @@
 #!/usr/bin/env python3
 """
 资产轮动数据收集脚本
-数据源：东方财富 API（稳定可靠）
+数据源：
+- Alpha Vantage API：黄金价格、铜价
+- 东方财富 API：沪深300、30年国债收益率
 
 更新日志：
-- 2026-04-15: 修复Yahoo Finance限流问题，改用东方财富
+- 2026-04-15: 添加 Alpha Vantage API 支持
+  黄金和铜价使用 Alpha Vantage（解决 Yahoo Finance 限流问题）
   沪深300和国债收益率使用东方财富实时行情
-  黄金使用51888 ETF价格（ETF净值数据有问题，价格仅供参考）
-  铜价暂时无法获取（东方财富期货接口不稳定）
-
-注意：
-- Yahoo Finance被全面限流，之前使用的数据源不可用
-- 东方财富51888 ETF的净值数据异常，计算出的金价可能不准确
-- 如需准确金价，建议使用Alpha Vantage API（需要API key）
 """
 
 import requests
@@ -23,6 +19,107 @@ import time
 
 MAX_RETRIES = 3
 RETRY_DELAY = 2
+
+ALPHA_VANTAGE_API_KEY = os.environ.get("ALPHA_VANTAGE_API_KEY", "")
+
+
+def fetch_with_retry(url, max_retries=MAX_RETRIES, timeout=30):
+    """带重试的 HTTP 请求"""
+    for attempt in range(max_retries):
+        try:
+            response = requests.get(url, timeout=timeout)
+            response.raise_for_status()
+            return response.json()
+        except Exception as e:
+            if attempt < max_retries - 1:
+                wait_time = RETRY_DELAY * (2**attempt)
+                time.sleep(wait_time)
+            else:
+                raise
+    return None
+
+
+def fetch_gold_from_alphavantage():
+    """从 Alpha Vantage 获取黄金价格 (GLD ETF)"""
+    if not ALPHA_VANTAGE_API_KEY:
+        return None
+
+    try:
+        url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=GLD&apikey={ALPHA_VANTAGE_API_KEY}"
+        data = fetch_with_retry(url)
+
+        if data is None:
+            return None, "REQUEST_FAILED"
+
+        if "Error Message" in data:
+            return None, f"API_ERROR: {data['Error Message']}"
+
+        if "Note" in data:
+            return None, f"RATE_LIMIT: {data['Note']}"
+
+        if "Information" in data:
+            return None, f"API_INFO: {data['Information']}"
+
+        if "Time Series (Daily)" not in data:
+            return None, f"UNEXPECTED_RESPONSE: {list(data.keys())}"
+
+        time_series = data["Time Series (Daily)"]
+        dates = sorted(time_series.keys(), reverse=True)
+
+        if len(dates) < 1:
+            return None, "NO_DATA"
+
+        latest_date = dates[0]
+        latest_data = time_series[latest_date]
+        close_price = float(latest_data["4. close"])
+
+        if len(dates) >= 2:
+            prev_close = float(time_series[dates[1]]["4. close"])
+            change_pct = ((close_price - prev_close) / prev_close) * 100
+        else:
+            change_pct = 0.0
+
+        return {
+            "date": latest_date,
+            "gold_price": round(close_price, 2),
+            "gold_change_pct": round(change_pct, 2),
+        }, None
+
+    except Exception as e:
+        return None, f"EXCEPTION: {str(e)}"
+
+
+def fetch_copper_from_alphavantage():
+    """从 Alpha Vantage 获取铜价 (铜期货)"""
+    if not ALPHA_VANTAGE_API_KEY:
+        return None
+
+    try:
+        url = f"https://www.alphavantage.co/query?function=COPPER&datatype=json&apikey={ALPHA_VANTAGE_API_KEY}"
+        data = fetch_with_retry(url)
+
+        if data is None:
+            return None, "REQUEST_FAILED"
+
+        if "Error Message" in data:
+            return None, f"API_ERROR: {data['Error Message']}"
+
+        if "Note" in data:
+            return None, f"RATE_LIMIT: {data['Note']}"
+
+        if "data" not in data or not data["data"]:
+            return None, "NO_DATA"
+
+        latest = data["data"][0]
+        copper_price = float(latest["value"])
+
+        return {
+            "date": latest["date"],
+            "copper_price": round(copper_price, 4),
+        }, None
+
+    except Exception as e:
+        return None, f"EXCEPTION: {str(e)}"
 
 
 def fetch_realtime_data(secid):
@@ -52,48 +149,11 @@ def fetch_realtime_data(secid):
     return None
 
 
-def fetch_gold_price():
-    """
-    获取黄金价格
-    使用东方财富黄金ETF(51888)作为代理指标
-    ETF价格约10元/份
-
-    注意：51888的净值数据(f169/f171)异常，计算出的金价仅供参考
-    正确的金价需要使用GLD ETF价格乘以10（或使用Alpha Vantage API）
-    """
-    data = fetch_realtime_data("1.51888")
-    if data:
-        try:
-            # ETF的f43直接是价格（元）
-            etf_price = float(data.get("f43", 0))
-
-            if etf_price > 0:
-                usd_cny_rate = 7.2
-
-                # 51888每份对应约0.53克黄金
-                # 但由于净值数据异常，使用简单的估算方法
-                # ETF价格 × 10 ≈ GLD ETF价格（10倍关系）
-                gld_estimate_usd = etf_price * 10
-                gold_cny_per_g = etf_price / 0.53  # 基于持仓量估算
-
-                return {
-                    "gold_usd": round(gld_estimate_usd, 2),
-                    "usdcny": round(usd_cny_rate, 4),
-                    "gold_cny_per_g": round(gold_cny_per_g, 2),
-                    "etf_price": round(etf_price, 2),
-                    "note": "基于51888估算，仅供参考",
-                }
-        except Exception as e:
-            print(f"  黄金价格计算错误: {e}")
-    return None
-
-
 def fetch_hs300():
-    """获取沪深300指数"""
+    """获取沪深300指数（东方财富）"""
     data = fetch_realtime_data("1.000300")
     if data:
         try:
-            # 注意：东方财富指数的f43直接是指数值，不需要除以100
             close = float(data.get("f43", 0))
             prev_close = float(data.get("f44", 0))
             if close > 0 and prev_close > 0:
@@ -107,99 +167,11 @@ def fetch_hs300():
     return None
 
 
-def fetch_copper():
-    """
-    获取铜价
-    注意：东方财富期货接口不稳定，暂时返回None
-    如需铜价数据，可考虑使用Alpha Vantage API
-    """
-    return None
-
-
 def fetch_bond_yield():
-    """获取30年国债收益率"""
+    """获取30年国债收益率（东方财富）"""
     data = fetch_realtime_data("1.019547")
     if data:
         try:
-            # 国债收益率f43直接是百分比数值，不需要除以100
-            close = float(data.get("f43", 0))
-            if close > 0:
-                if close > 100:
-                    close = close / 100
-                return round(close, 4)
-        except:
-            pass
-    return None
-
-
-def fetch_gold_price():
-    """
-    获取黄金价格
-    使用东方财富黄金ETF(51888)作为代理指标
-    ETF价格约10元/份
-
-    注意：51888 ETF每份代表0.53克黄金
-    ETF价格 / 持有克数 = 黄金价格(元/克)
-    """
-    data = fetch_realtime_data("1.51888")
-    if data:
-        try:
-            # ETF的f43直接是价格（元），不需要除以100
-            etf_price = float(data.get("f43", 0))
-            holding = float(data.get("f170", 0.53))
-
-            if etf_price > 0 and holding > 0:
-                usd_cny_rate = 7.2
-
-                # 51888每份对应holding克黄金
-                gold_cny_per_g = etf_price / holding
-                gold_usd_per_oz = (gold_cny_per_g * 31.1035) / usd_cny_rate
-
-                return {
-                    "gold_usd": round(gold_usd_per_oz, 2),
-                    "usdcny": round(usd_cny_rate, 4),
-                    "gold_cny_per_g": round(gold_cny_per_g, 2),
-                    "etf_price": round(etf_price, 2),
-                }
-        except Exception as e:
-            print(f"  黄金价格计算错误: {e}")
-    return None
-
-
-def fetch_hs300():
-    """获取沪深300指数"""
-    data = fetch_realtime_data("1.000300")
-    if data:
-        try:
-            # 注意：东方财富指数的f43直接是指数值，不需要除以100
-            close = float(data.get("f43", 0))
-            prev_close = float(data.get("f44", 0))
-            if close > 0 and prev_close > 0:
-                change_pct = (close - prev_close) / prev_close * 100
-                return {
-                    "hs300_price": round(close, 2),
-                    "hs300_change_pct": round(change_pct, 2),
-                }
-        except:
-            pass
-    return None
-
-
-def fetch_copper():
-    """
-    获取铜价
-    注意：东方财富期货接口不稳定，暂时返回None
-    如需铜价数据，可考虑使用Alpha Vantage API
-    """
-    return None
-
-
-def fetch_bond_yield():
-    """获取30年国债收益率"""
-    data = fetch_realtime_data("1.019547")
-    if data:
-        try:
-            # 国债收益率f43直接是百分比数值，不需要除以100
             close = float(data.get("f43", 0))
             if close > 0:
                 if close > 100:
@@ -215,10 +187,13 @@ def fetch_market_data():
     print("=" * 60)
     print("资产轮动 - 市场数据采集")
     print("=" * 60)
+    print(f"Alpha Vantage API: {'✓ 已配置' if ALPHA_VANTAGE_API_KEY else '✗ 未配置'}")
 
     today = datetime.now().strftime("%Y-%m-%d")
     print(f"采集日期: {today}")
     print("\n正在采集数据...")
+
+    errors = []
 
     bond_yield = fetch_bond_yield()
     print(
@@ -227,13 +202,16 @@ def fetch_market_data():
         else "  ✗ 30年国债收益率: 获取失败"
     )
 
-    gold_data = fetch_gold_price()
-    if gold_data:
+    gold_data, gold_error = fetch_gold_from_alphavantage()
+    if gold_error:
+        errors.append(f"黄金: {gold_error}")
+        print(f"  ✗ 黄金价格: 获取失败 ({gold_error})")
+    elif gold_data:
         print(
-            f"  ✓ 黄金价格: ${gold_data['gold_usd']}/oz, ¥{gold_data['gold_cny_per_g']}/g (ETF:¥{gold_data['etf_price']})"
+            f"  ✓ 黄金价格: ${gold_data['gold_price']} ({gold_data['gold_change_pct']:+.2f}%)"
         )
     else:
-        print("  ✗ 黄金价格: 获取失败")
+        print("  ✗ 黄金价格: 未获取到数据")
 
     stock_data = fetch_hs300()
     if stock_data:
@@ -243,25 +221,31 @@ def fetch_market_data():
     else:
         print("  ✗ 沪深300: 获取失败")
 
-    copper_price = fetch_copper()
-    if copper_price:
-        print(f"  ✓ 铜价: ${copper_price}")
+    copper_data, copper_error = fetch_copper_from_alphavantage()
+    if copper_error:
+        errors.append(f"铜价: {copper_error}")
+        print(f"  ✗ 铜价: 获取失败 ({copper_error})")
+    elif copper_data:
+        print(f"  ✓ 铜价: ${copper_data['copper_price']}")
     else:
-        print("  ⚠ 铜价: 暂无法获取 (东方财富期货接口不稳定)")
+        print("  ✗ 铜价: 未获取到数据")
 
     record = {
         "date": today,
         "bond_yield_30y": bond_yield,
-        "gold_price_usd": gold_data["gold_usd"] if gold_data else None,
-        "usdcny": gold_data["usdcny"] if gold_data else None,
-        "gold_price_cny": gold_data["gold_cny_per_g"] if gold_data else None,
+        "gold_price_usd": gold_data["gold_price"] if gold_data else None,
+        "gold_change_pct": gold_data["gold_change_pct"] if gold_data else None,
+        "usdcny": 7.2,
+        "gold_price_cny": round(gold_data["gold_price"] * 7.2 / 31.1035, 2)
+        if gold_data
+        else None,
         "hs300_price": stock_data["hs300_price"] if stock_data else None,
         "hs300_change_pct": stock_data["hs300_change_pct"] if stock_data else None,
-        "copper_price": copper_price,
+        "copper_price": copper_data["copper_price"] if copper_data else None,
         "updated_at": datetime.now().isoformat(),
     }
 
-    return record
+    return record, errors if errors else None
 
 
 def save_daily_data(record):
@@ -329,7 +313,7 @@ def calculate_indicators(data):
 
 def main():
     """主函数"""
-    record = fetch_market_data()
+    record, errors = fetch_market_data()
 
     if record:
         all_data = save_daily_data(record)
@@ -347,6 +331,9 @@ def main():
             with open("data/indicators.json", "w") as f:
                 json.dump(indicators, f, indent=2)
 
+        if errors:
+            print(f"\n⚠️  部分数据获取失败: {errors}")
+            return True
         print("\n✓ 数据采集完成")
         return True
     else:

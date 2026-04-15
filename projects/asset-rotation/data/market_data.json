@@ -123,12 +123,13 @@
   {
     "date": "2026-04-15",
     "bond_yield_30y": 1.1691,
-    "gold_price_usd": 82.03,
+    "gold_price_usd": 445.09,
+    "gold_change_pct": 2.23,
     "usdcny": 7.2,
-    "gold_price_cny": 18.99,
+    "gold_price_cny": 103.03,
     "hs300_price": 4685.25,
     "hs300_change_pct": -0.97,
-    "copper_price": null,
-    "updated_at": "2026-04-15T19:05:59.147302"
+    "copper_price": 12951.345,
+    "updated_at": "2026-04-15T19:21:42.983499"
   }
 ]
