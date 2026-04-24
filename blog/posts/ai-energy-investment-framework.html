@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>算力与能源投资研究：从AI芯片到电力瓶颈的分析框架 - Investment Blog</title>
+    <link rel="stylesheet" href="../../assets/css/terminal.css">
+    <link rel="stylesheet" href="../../assets/css/blog.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="top-bar">
+        <div class="brand">
+            <div class="brand-icon" style="background: linear-gradient(135deg, #58a6ff, #7bb3ff);">IR</div>
+            <div>
+                <div class="brand-text">INVEST RESEARCH</div>
+                <div class="brand-sub">投资博客</div>
+            </div>
+        </div>
+        <div class="top-status">
+            <div class="status-item">
+                <span class="status-indicator"></span>
+                <span class="mono">ARTICLE VIEW</span>
+            </div>
+            <div class="status-item mono" id="currentTime">--:--:--</div>
+        </div>
+    </header>
+
+    <aside class="sidebar">
+        <nav class="nav-section">
+            <div class="nav-title">Dashboard</div>
+            <ul class="nav-list">
+                <li class="nav-item" onclick="location.href='../../index.html'">
+                    <span class="nav-icon">◈</span>
+                    <span class="nav-text">研究总览</span>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-title">Research Projects</div>
+            <ul class="nav-list">
+                <li class="nav-item" onclick="location.href='../../projects/gold-iv/index.html'">
+                    <span class="nav-icon">◉</span>
+                    <span class="nav-text">黄金期权IV</span>
+                    <span class="nav-badge">VOL</span>
+                </li>
+                <li class="nav-item" onclick="location.href='../../projects/asset-rotation/index.html'">
+                    <span class="nav-icon">◉</span>
+                    <span class="nav-text">资产轮动</span>
+                    <span class="nav-badge">ROT</span>
+                </li>
+                <li class="nav-item" onclick="location.href='../../projects/ai-energy/index.html'">
+                    <span class="nav-icon">◉</span>
+                    <span class="nav-text">算力能源</span>
+                    <span class="nav-badge">AIE</span>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-title">Content</div>
+            <ul class="nav-list">
+                <li class="nav-item active" onclick="location.href='../index.html'">
+                    <span class="nav-icon">📝</span>
+                    <span class="nav-text">投资博客</span>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-title">Article</div>
+            <ul class="nav-list">
+                <li class="nav-item" onclick="scrollToSection('why')">
+                    <span class="nav-icon">1️⃣</span>
+                    <span class="nav-text">研究动机</span>
+                </li>
+                <li class="nav-item" onclick="scrollToSection('chain')">
+                    <span class="nav-icon">2️⃣</span>
+                    <span class="nav-text">产业链传导</span>
+                </li>
+                <li class="nav-item" onclick="scrollToSection('data')">
+                    <span class="nav-icon">3️⃣</span>
+                    <span class="nav-text">数据体系</span>
+                </li>
+                <li class="nav-item" onclick="scrollToSection('signals')">
+                    <span class="nav-icon">4️⃣</span>
+                    <span class="nav-text">信号方法</span>
+                </li>
+                <li class="nav-item" onclick="scrollToSection('next')">
+                    <span class="nav-icon">5️⃣</span>
+                    <span class="nav-text">后续迭代</span>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <article class="blog-article">
+            <header class="blog-article-header">
+                <h1 class="blog-article-title">算力与能源投资研究：从AI芯片到电力瓶颈的分析框架</h1>
+
+                <div class="blog-article-meta">
+                    <div class="blog-article-author">
+                        <div class="blog-author-avatar">王</div>
+                        <div class="blog-author-info">
+                            <div class="blog-author-name">王安</div>
+                            <div class="blog-author-title">数据与AI从业者 | 北大+中科大</div>
+                        </div>
+                    </div>
+                    <div class="blog-article-date">
+                        📅 2026年4月24日 · ⏱️ 12分钟阅读
+                    </div>
+                </div>
+            </header>
+
+            <div class="blog-article-content">
+                <blockquote>
+                    <strong>项目概览</strong><br>
+                    新主题：算力与能源投资研究<br>
+                    研究问题：AI投资主线会如何从芯片扩散到数据中心、电力、电网和能源资产？<br>
+                    页面入口：<a href="../../projects/ai-energy/index.html">算力与能源投资研究</a>
+                </blockquote>
+
+                <h2 id="why">一、为什么做这个项目</h2>
+
+                <p>过去两年，AI投资最显性的主线是芯片。市场最容易理解的是GPU供不应求、先进封装紧张、云厂商不断上调资本开支。但如果把时间拉长一点，AI基础设施不是只由芯片决定的。</p>
+
+                <p>一个更完整的链条是：</p>
+
+                <pre><code>模型需求 → 云厂商CAPEX → GPU/服务器 → 数据中心 → 电力接入 → 电网设备 → 发电资产</code></pre>
+
+                <p>当芯片供给逐步改善后，新的约束可能转移到能源端。数据中心不是普通办公室，它需要稳定、连续、高密度的电力供应。AI训练和推理需求越强，电力接入、冷却、输配电、长期购电协议、核电和天然气发电的重要性就越高。</p>
+
+                <p>所以这个项目想回答三个问题：</p>
+
+                <ol>
+                    <li><strong>AI资本开支还在扩张吗？</strong>如果大厂CAPEX继续上行，说明算力周期还没结束。</li>
+                    <li><strong>算力收入有没有兑现？</strong>如果NVDA数据中心收入和AI服务器收入同步上升，说明投入仍能转化为产业链收入。</li>
+                    <li><strong>能源瓶颈是否成为新主线？</strong>如果电力需求、电网排队、PPA签约持续升温，投资重点可能从纯芯片扩展到能源基础设施。</li>
+                </ol>
+
+                <h2 id="chain">二、从“芯片叙事”到“基础设施叙事”</h2>
+
+                <h3>2.1 算力不是一个单点资产</h3>
+
+                <p>AI算力投资很容易被简化成“买芯片公司”。但真正的算力供给包含多个环节：</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>环节</th>
+                            <th>核心问题</th>
+                            <th>代表资产</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>AI芯片</td>
+                            <td>GPU、ASIC、先进封装是否紧张</td>
+                            <td>NVDA、AMD、AVGO</td>
+                        </tr>
+                        <tr>
+                            <td>服务器与网络</td>
+                            <td>AI服务器、交换机、光模块是否放量</td>
+                            <td>DELL、SMCI、ANET、MRVL</td>
+                        </tr>
+                        <tr>
+                            <td>数据中心</td>
+                            <td>机柜功率密度、电力接入、冷却能力</td>
+                            <td>EQIX、DLR</td>
+                        </tr>
+                        <tr>
+                            <td>电力与电网</td>
+                            <td>发电容量、电网改造、变压器交付周期</td>
+                            <td>CEG、VST、ETN、PWR</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>2.2 投资主线可能发生迁移</h3>
+
+                <p>我把AI基础设施周期粗略分成四个阶段：</p>
+
+                <ul>
+                    <li><strong>算力扩张期</strong>：CAPEX上行，芯片和服务器最强。</li>
+                    <li><strong>能源瓶颈期</strong>：电力接入和电网约束凸显，电力、电网、核电开始占优。</li>
+                    <li><strong>泡沫过热期</strong>：CAPEX仍高，但收入和利润兑现放缓，高估值资产风险上升。</li>
+                    <li><strong>周期降温期</strong>：CAPEX放缓，库存和产能压力出现，适合降低高弹性资产暴露。</li>
+                </ul>
+
+                <p>当前项目第一版默认把重点放在“能源瓶颈期”的识别上：不是判断AI有没有前景，而是判断产业链利润和市场关注点正在往哪里扩散。</p>
+
+                <h2 id="data">三、数据体系怎么设计</h2>
+
+                <h3>3.1 第一层：资本开支</h3>
+
+                <p>云厂商CAPEX是这个项目的起点。因为AI基础设施的需求不是凭空出现的，而是由微软、谷歌、亚马逊、Meta、Oracle这些大型云厂商和平台公司的资本开支驱动。</p>
+
+                <p>第一版跟踪五家公司：</p>
+
+                <pre><code>MSFT / GOOG / AMZN / META / ORCL</code></pre>
+
+                <p>核心看两个指标：</p>
+
+                <ul>
+                    <li><strong>CAPEX合计规模</strong>：判断AI基础设施投入绝对强度。</li>
+                    <li><strong>CAPEX同比增速</strong>：判断周期是在加速还是降温。</li>
+                </ul>
+
+                <h3>3.2 第二层：收入兑现</h3>
+
+                <p>只看资本开支是不够的。高CAPEX如果无法转化为收入，可能是泡沫；高CAPEX如果同步带来芯片、服务器、网络设备收入上行，才说明产业链仍处于健康扩张。</p>
+
+                <p>所以页面里放了两个收入代理指标：</p>
+
+                <ul>
+                    <li><strong>NVDA数据中心收入</strong>：代表AI芯片和加速计算需求。</li>
+                    <li><strong>AI服务器收入指数</strong>：代表服务器和整机交付景气度。</li>
+                </ul>
+
+                <h3>3.3 第三层：能源瓶颈</h3>
+
+                <p>能源端重点不是看某一天电价涨跌，而是看趋势性的供需压力。第一版采用三个代理变量：</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>指标</th>
+                            <th>含义</th>
+                            <th>投资解释</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>数据中心电力需求</td>
+                            <td>AI数据中心带来的新增负荷</td>
+                            <td>需求越强，电力资产越受关注</td>
+                        </tr>
+                        <tr>
+                            <td>PPA签约容量</td>
+                            <td>大厂锁定长期电力供应的强度</td>
+                            <td>说明电力成为战略资源</td>
+                        </tr>
+                        <tr>
+                            <td>电网排队压力</td>
+                            <td>项目接入电网的拥堵程度</td>
+                            <td>利好电网设备和工程服务</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>3.4 第四层：市场表现验证</h3>
+
+                <p>最后要看市场是否已经在定价这个逻辑。项目建立了三个资产篮子：</p>
+
+                <ul>
+                    <li><strong>算力链</strong>：NVDA、AVGO、ANET、AMD、DELL</li>
+                    <li><strong>能源链</strong>：CEG、VST、NEE、XLU、XLE</li>
+                    <li><strong>电网设备</strong>：ETN、PWR、HUBB、GEV、GRID</li>
+                </ul>
+
+                <p>如果电网设备篮子持续跑赢算力链，说明市场开始从“买GPU”转向“买AI基础设施瓶颈”。这类变化往往比新闻标题更有用。</p>
+
+                <h2 id="signals">四、如何把数据变成信号</h2>
+
+                <p>这个项目不是为了堆指标，而是为了形成一个可以复盘的判断框架。第一版信号面板包含四类判断：</p>
+
+                <h3>4.1 CAPEX信号</h3>
+
+                <p>判断云厂商是否仍在扩张。如果CAPEX增速维持高位，说明产业链需求没有明显降温；如果CAPEX放缓，就要警惕算力链估值回调。</p>
+
+                <h3>4.2 电力信号</h3>
+
+                <p>判断数据中心用电压力是否上升。如果电力需求增速高于供给扩张，能源和电网资产的逻辑会更强。</p>
+
+                <h3>4.3 估值信号</h3>
+
+                <p>算力方向的难点是好公司常常不便宜。项目会单独保留估值热度指标，避免把产业趋势和买入价格混为一谈。</p>
+
+                <h3>4.4 配置信号</h3>
+
+                <p>最终输出不是“看多AI”这么粗的结论，而是更具体的配置倾向：</p>
+
+                <ul>
+                    <li>算力扩张期：芯片、服务器、网络设备权重更高。</li>
+                    <li>能源瓶颈期：电力、电网、核电、数据中心REITs权重更高。</li>
+                    <li>泡沫过热期：降低高估值高弹性资产，保留确定性更强的基础设施资产。</li>
+                    <li>周期降温期：转向防守，等待CAPEX和订单重新确认。</li>
+                </ul>
+
+                <h2 id="next">五、后续怎么迭代</h2>
+
+                <p>第一版先解决“能看、能追踪、能复盘”。后续我准备从三个方向迭代：</p>
+
+                <ol>
+                    <li><strong>数据源更稳定</strong>：市场价格优先使用Alpha Vantage环境变量，避免Yahoo Finance限流；财报类数据保留手动季度更新。</li>
+                    <li><strong>指标更真实</strong>：逐步接入EIA、FRED、公司财报和电力项目数据，减少样例代理指标。</li>
+                    <li><strong>信号可回测</strong>：记录每次阶段判断，未来对照资产篮子表现，验证“能源瓶颈期”信号是否真的有效。</li>
+                </ol>
+
+                <p>这个项目对我来说有两个价值。第一，它把AI投资从单一股票叙事拉回到产业链和基础设施约束。第二，它把“感觉某个方向很热”变成一组可以持续观察的数据。</p>
+
+                <p>投资研究最怕的是只跟着故事走。故事可以提供方向，但数据才能帮助我们判断：这个方向处在早期、中期，还是已经被市场充分定价。</p>
+            </div>
+
+            <footer class="blog-article-footer">
+                <div class="blog-article-tags">
+                    <span class="blog-tag tech">算力</span>
+                    <span class="blog-tag tech">能源</span>
+                    <span class="blog-tag strategy">投资研究</span>
+                </div>
+
+                <div class="blog-article-nav">
+                    <a href="../index.html" class="blog-nav-btn prev">
+                        <div class="blog-nav-label">← 返回博客列表</div>
+                    </a>
+                    <a href="building-investment-research-system.html" class="blog-nav-btn next">
+                        <div class="blog-nav-label">上一篇 →</div>
+                        <div class="blog-nav-title">黄金波动率追踪实战</div>
+                    </a>
+                </div>
+            </footer>
+        </article>
+    </main>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('zh-CN', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('currentTime').textContent = timeStr;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    </script>
+</body>
+</html>
