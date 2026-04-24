@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>算力与能源投资研究 - AI Energy Research</title>
+    <link rel="stylesheet" href="../../assets/css/terminal.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="top-bar">
+        <div class="brand">
+            <div class="brand-icon">IR</div>
+            <div>
+                <div class="brand-text">INVEST RESEARCH</div>
+                <div class="brand-sub">算力与能源投资研究</div>
+            </div>
+        </div>
+        <div class="top-status">
+            <div class="status-item">
+                <span class="status-indicator"></span>
+                <span class="mono">AI POWER WATCH</span>
+            </div>
+            <div class="status-item mono" id="currentTime">--:--:--</div>
+        </div>
+    </header>
+
+    <aside class="sidebar">
+        <nav class="nav-section">
+            <div class="nav-title">Dashboard</div>
+            <ul class="nav-list">
+                <li class="nav-item" onclick="location.href='../../index.html'">
+                    <span class="nav-icon">◈</span>
+                    <span class="nav-text">研究总览</span>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-title">Research Projects</div>
+            <ul class="nav-list">
+                <li class="nav-item" onclick="location.href='../gold-iv/index.html'">
+                    <span class="nav-icon">◉</span>
+                    <span class="nav-text">黄金期权IV</span>
+                    <span class="nav-badge">VOL</span>
+                </li>
+                <li class="nav-item" onclick="location.href='../asset-rotation/index.html'">
+                    <span class="nav-icon">◉</span>
+                    <span class="nav-text">资产轮动</span>
+                    <span class="nav-badge">ROT</span>
+                </li>
+                <li class="nav-item active" onclick="location.href='index.html'">
+                    <span class="nav-icon">◉</span>
+                    <span class="nav-text">算力能源</span>
+                    <span class="nav-badge">AIE</span>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-title">Content</div>
+            <ul class="nav-list">
+                <li class="nav-item" onclick="location.href='../../blog/index.html'">
+                    <span class="nav-icon">📝</span>
+                    <span class="nav-text">投资博客</span>
+                    <span class="nav-badge">NEW</span>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-title">AI Energy</div>
+            <ul class="nav-list">
+                <li class="nav-item" onclick="scrollToSection('overview')">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">核心指标</span>
+                </li>
+                <li class="nav-item" onclick="scrollToSection('charts')">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-text">图表分析</span>
+                </li>
+                <li class="nav-item" onclick="scrollToSection('signals')">
+                    <span class="nav-icon">🎯</span>
+                    <span class="nav-text">投资信号</span>
+                </li>
+                <li class="nav-item" onclick="scrollToSection('watchlist')">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-text">资产池</span>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">
+                <span class="page-title-icon">⚡</span>
+                算力与能源投资研究
+            </h1>
+            <p class="page-desc">
+                跟踪 AI 算力资本开支、数据中心电力需求、电网瓶颈和能源资产表现，判断投资主线从芯片向基础设施扩散的阶段。
+                <span class="mono" style="color: var(--text-muted);">| FRAMEWORK: CHIP → DATA CENTER → POWER GRID</span>
+            </p>
+        </div>
+
+        <section id="overview" class="grid grid-4" style="margin-bottom: 32px;">
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">AI CAPEX 增速</div>
+                    <div class="card-badge badge-up">EXP</div>
+                </div>
+                <div class="card-value mono" id="capexGrowth">--</div>
+                <div class="card-change change-up">云厂商投入周期</div>
+                <div class="card-footer mono">MSFT/GOOG/AMZN/META/ORCL</div>
+            </div>
+
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">NVDA 数据中心</div>
+                    <div class="card-badge badge-live">DC</div>
+                </div>
+                <div class="card-value mono" id="nvdaGrowth">--</div>
+                <div class="card-change change-up">算力收入兑现</div>
+                <div class="card-footer mono">Data Center Revenue YoY</div>
+            </div>
+
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">电力需求增速</div>
+                    <div class="card-badge badge-down">LOAD</div>
+                </div>
+                <div class="card-value mono" id="powerGrowth">--</div>
+                <div class="card-change change-down">数据中心负荷压力</div>
+                <div class="card-footer mono">Data Center Power Demand</div>
+            </div>
+
+            <div class="data-card">
+                <div class="card-header">
+                    <div class="card-title">能源瓶颈指数</div>
+                    <div class="card-badge badge-up">HOT</div>
+                </div>
+                <div class="card-value mono" id="bottleneckIndex">--</div>
+                <div class="card-change">0-100 综合评分</div>
+                <div class="card-footer mono">POWER / GRID / PPA</div>
+            </div>
+        </section>
+
+        <section style="margin-bottom: 32px;">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-title">当前阶段判断</div>
+                    <div class="mono" style="font-size: 12px; color: var(--text-muted);">LAST UPDATE: <span id="lastDataUpdate">--</span></div>
+                </div>
+                <div style="padding: 8px 4px 4px;">
+                    <div id="currentStage" style="font-size: 28px; font-weight: 700; color: var(--color-gold); margin-bottom: 10px;">--</div>
+                    <div id="stageSummary" style="font-size: 14px; color: var(--text-secondary); line-height: 1.7;">--</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="charts" style="margin-bottom: 32px;">
+            <div class="grid grid-2" style="margin-bottom: 20px;">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">云厂商 AI CAPEX 趋势</div>
+                        <div class="chart-controls">
+                            <button class="chart-btn active">Quarterly</button>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="capexChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">算力收入兑现</div>
+                        <div class="chart-controls">
+                            <button class="chart-btn active">Revenue</button>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">电力瓶颈监控</div>
+                        <div class="chart-controls">
+                            <button class="chart-btn active">Power</button>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="powerChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">算力链 vs 能源链相对表现</div>
+                        <div class="chart-controls">
+                            <button class="chart-btn active">Basket</button>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="signals" style="margin-bottom: 32px;">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-title">投资信号面板</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">基于资本开支、收入兑现、电力约束和估值热度</div>
+                </div>
+                <div class="grid grid-4" style="padding: 4px; gap: 16px;">
+                    <div id="signalCapex" style="padding: 16px; background: var(--bg-secondary); border-radius: 6px;"></div>
+                    <div id="signalPower" style="padding: 16px; background: var(--bg-secondary); border-radius: 6px;"></div>
+                    <div id="signalValuation" style="padding: 16px; background: var(--bg-secondary); border-radius: 6px;"></div>
+                    <div id="signalAllocation" style="padding: 16px; background: var(--bg-secondary); border-radius: 6px; border: 1px solid var(--color-gold);"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="watchlist">
+            <div class="data-table-container">
+                <div class="data-table-header">
+                    <div class="data-table-title">算力能源资产池</div>
+                    <div class="data-table-actions">
+                        <button class="table-btn" onclick="location.reload()">刷新</button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>TICKER</th>
+                            <th>NAME</th>
+                            <th>SEGMENT</th>
+                            <th>SCORE</th>
+                            <th>SIGNAL</th>
+                            <th>KEY RISK</th>
+                        </tr>
+                    </thead>
+                    <tbody id="watchlistBody">
+                        <tr>
+                            <td colspan="6" class="loading">
+                                <div class="spinner"></div>
+                                LOADING DATA...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/ai-energy-data.js"></script>
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent =
+                now.toLocaleTimeString('zh-CN', { hour12: false });
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+name: Update AI Energy Data
+
+on:
+  schedule:
+    # 每天 UTC 14:30 运行（北京时间 22:30）
+    - cron: '30 14 * * *'
+
+  workflow_dispatch:
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+
+    - name: Fetch AI energy market data
+      env:
+        ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+        STOOQ_API_KEY: ${{ secrets.STOOQ_API_KEY }}
+      run: |
+        cd projects/ai-energy
+        python scripts/fetch_data.py
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add projects/ai-energy/data/
+        git diff --staged --quiet || (git commit -m "Update AI energy data: $(date +'%Y-%m-%d')" && git push)

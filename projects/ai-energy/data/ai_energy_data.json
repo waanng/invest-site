@@ -1,0 +1,240 @@
+{
+  "updated_at": "2026-04-24T10:00:00+08:00",
+  "stage": "能源瓶颈期",
+  "summary": "AI资本开支仍在扩张，市场主线从芯片向电力、电网、核电和数据中心能源约束扩散。",
+  "capex": [
+    {
+      "quarter": "2025Q1",
+      "msft": 16.7,
+      "goog": 17.2,
+      "amzn": 24.3,
+      "meta": 13.7,
+      "orcl": 3.2
+    },
+    {
+      "quarter": "2025Q2",
+      "msft": 19.0,
+      "goog": 19.1,
+      "amzn": 25.8,
+      "meta": 15.1,
+      "orcl": 4.0
+    },
+    {
+      "quarter": "2025Q3",
+      "msft": 20.1,
+      "goog": 21.0,
+      "amzn": 27.3,
+      "meta": 16.8,
+      "orcl": 4.8
+    },
+    {
+      "quarter": "2025Q4",
+      "msft": 22.6,
+      "goog": 22.4,
+      "amzn": 29.1,
+      "meta": 18.4,
+      "orcl": 5.7
+    },
+    {
+      "quarter": "2026Q1",
+      "msft": 24.2,
+      "goog": 24.0,
+      "amzn": 31.5,
+      "meta": 20.2,
+      "orcl": 6.8
+    }
+  ],
+  "revenue": [
+    {
+      "quarter": "2025Q1",
+      "nvda_data_center": 22.6,
+      "ai_server": 48.0
+    },
+    {
+      "quarter": "2025Q2",
+      "nvda_data_center": 26.3,
+      "ai_server": 55.0
+    },
+    {
+      "quarter": "2025Q3",
+      "nvda_data_center": 30.8,
+      "ai_server": 63.0
+    },
+    {
+      "quarter": "2025Q4",
+      "nvda_data_center": 35.6,
+      "ai_server": 72.0
+    },
+    {
+      "quarter": "2026Q1",
+      "nvda_data_center": 39.1,
+      "ai_server": 83.0
+    }
+  ],
+  "power": [
+    {
+      "quarter": "2025Q1",
+      "dc_power_demand": 38,
+      "ppa_capacity": 9.5,
+      "grid_queue": 31,
+      "industrial_power_price": 7.6
+    },
+    {
+      "quarter": "2025Q2",
+      "dc_power_demand": 41,
+      "ppa_capacity": 11.2,
+      "grid_queue": 34,
+      "industrial_power_price": 7.8
+    },
+    {
+      "quarter": "2025Q3",
+      "dc_power_demand": 45,
+      "ppa_capacity": 13.8,
+      "grid_queue": 38,
+      "industrial_power_price": 8.1
+    },
+    {
+      "quarter": "2025Q4",
+      "dc_power_demand": 50,
+      "ppa_capacity": 16.4,
+      "grid_queue": 43,
+      "industrial_power_price": 8.5
+    },
+    {
+      "quarter": "2026Q1",
+      "dc_power_demand": 56,
+      "ppa_capacity": 19.7,
+      "grid_queue": 49,
+      "industrial_power_price": 8.9
+    }
+  ],
+  "market": [
+    {
+      "date": "2025-12-31",
+      "compute_basket": 100,
+      "energy_basket": 100,
+      "grid_basket": 100
+    },
+    {
+      "date": "2026-01-15",
+      "compute_basket": 108,
+      "energy_basket": 104,
+      "grid_basket": 106
+    },
+    {
+      "date": "2026-01-31",
+      "compute_basket": 115,
+      "energy_basket": 109,
+      "grid_basket": 113
+    },
+    {
+      "date": "2026-02-15",
+      "compute_basket": 121,
+      "energy_basket": 117,
+      "grid_basket": 124
+    },
+    {
+      "date": "2026-02-28",
+      "compute_basket": 118,
+      "energy_basket": 124,
+      "grid_basket": 132
+    },
+    {
+      "date": "2026-03-15",
+      "compute_basket": 125,
+      "energy_basket": 133,
+      "grid_basket": 145
+    },
+    {
+      "date": "2026-03-31",
+      "compute_basket": 130,
+      "energy_basket": 141,
+      "grid_basket": 156
+    },
+    {
+      "date": "2026-04-15",
+      "compute_basket": 128,
+      "energy_basket": 148,
+      "grid_basket": 169
+    },
+    {
+      "date": "2026-04-24",
+      "compute_basket": 132,
+      "energy_basket": 154,
+      "grid_basket": 178
+    }
+  ],
+  "watchlist": [
+    {
+      "ticker": "NVDA",
+      "name": "NVIDIA",
+      "segment": "AI芯片",
+      "score": 82,
+      "signal": "持有",
+      "risk": "估值高位，关注数据中心收入兑现"
+    },
+    {
+      "ticker": "AVGO",
+      "name": "Broadcom",
+      "segment": "ASIC/网络",
+      "score": 78,
+      "signal": "关注",
+      "risk": "受益定制芯片，订单节奏重要"
+    },
+    {
+      "ticker": "ANET",
+      "name": "Arista",
+      "segment": "AI网络",
+      "score": 76,
+      "signal": "关注",
+      "risk": "云厂商交换机资本开支敏感"
+    },
+    {
+      "ticker": "CEG",
+      "name": "Constellation Energy",
+      "segment": "核电/电力",
+      "score": 88,
+      "signal": "强关注",
+      "risk": "长协电价与监管变化"
+    },
+    {
+      "ticker": "VST",
+      "name": "Vistra",
+      "segment": "独立电力",
+      "score": 84,
+      "signal": "强关注",
+      "risk": "电价波动与发电燃料成本"
+    },
+    {
+      "ticker": "ETN",
+      "name": "Eaton",
+      "segment": "电网设备",
+      "score": 86,
+      "signal": "强关注",
+      "risk": "订单高景气后的估值消化"
+    },
+    {
+      "ticker": "PWR",
+      "name": "Quanta Services",
+      "segment": "电网工程",
+      "score": 81,
+      "signal": "关注",
+      "risk": "项目交付周期与人工成本"
+    },
+    {
+      "ticker": "EQIX",
+      "name": "Equinix",
+      "segment": "数据中心REITs",
+      "score": 73,
+      "signal": "观察",
+      "risk": "电力接入与融资成本"
+    }
+  ],
+  "signals": {
+    "capex_growth": 34.2,
+    "nvda_dc_growth": 73.0,
+    "power_demand_growth": 47.4,
+    "energy_bottleneck": 78,
+    "valuation_heat": 72
+  }
+}

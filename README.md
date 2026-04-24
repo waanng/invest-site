@@ -27,7 +27,13 @@
    - 月度宏观数据录入与配置建议
    - 状态：🟢 运行中
 
-3. **投资博客** (Investment Blog) 📝
+3. **算力与能源投资研究** (AI Energy Research) ⚡
+   - 跟踪 AI 资本开支、数据中心电力需求、电网瓶颈和能源资产表现
+   - 建立算力链、能源链、电网设备三类资产篮子
+   - 输出算力扩张、能源瓶颈、估值过热和配置倾向信号
+   - 状态：🟢 运行中
+
+4. **投资博客** (Investment Blog) 📝
    - 记录投资研究方法论和实践经验
    - 系统构建教程和技术分享
    - 状态：🟢 运行中
@@ -126,6 +132,14 @@ invest-site/
 │       │   └── macro_data.json      # 宏观数据
 │       └── js/
 │           └── rotation-data.js     # 数据渲染与录入
+│   └── ai-energy/
+│       ├── index.html               # 算力能源研究页面
+│       ├── data/
+│       │   └── ai_energy_data.json  # CAPEX、能源瓶颈、资产池数据
+│       ├── scripts/
+│       │   └── fetch_data.py        # 市场篮子数据更新脚本
+│       └── js/
+│           └── ai-energy-data.js    # 图表与信号渲染
 ├── index.html                       # 主页
 ├── README.md                        # 本文件
 └── ARTICLE.md                       # 项目详细介绍文章
@@ -167,6 +181,8 @@ cd invest-site
 4. Name: `ALPHA_VANTAGE_API_KEY`
 5. Value: 你的 API Key
 
+算力能源项目也会读取同一个 `ALPHA_VANTAGE_API_KEY`，用于更新算力链、能源链和电网设备资产篮子。不要把 API Key 写入代码或 JSON 数据文件。
+
 ### 6. 等待部署
 
 - 首次部署需要 2-3 分钟
@@ -181,6 +197,7 @@ cd invest-site
 | 黄金价格 | Alpha Vantage | GLD ETF | 每日 21:30 CST |
 | 黄金波动率 | Yahoo Finance | ^GVZ | 每日 21:30 CST |
 | 宏观经济 | 国家统计局 | - | 月度手动录入 |
+| 算力能源资产篮子 | Yahoo Finance | NVDA/CEG/ETN等 | 每日 22:30 CST |
 
 **为什么选择 21:30 更新时间？**
 - 黄金期货（GC=F）北京时间 20:00 收盘
