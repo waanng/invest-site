@@ -239,5 +239,17 @@
     "hs300_change_pct": -0.36,
     "copper_price": 12528.7095,
     "updated_at": "2026-04-24T14:37:59.974865"
+  },
+  {
+    "date": "2026-04-25",
+    "bond_yield_30y": 1.1721,
+    "gold_price_usd": 433.25,
+    "gold_change_pct": 0.51,
+    "usdcny": 7.2,
+    "gold_price_cny": 100.29,
+    "hs300_price": 4769.37,
+    "hs300_change_pct": -0.36,
+    "copper_price": 12528.7095,
+    "updated_at": "2026-04-25T14:20:29.437709"
   }
 ]
