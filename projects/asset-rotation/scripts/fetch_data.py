@@ -19,6 +19,8 @@ import time
 
 MAX_RETRIES = 3
 RETRY_DELAY = 2
+GLD_TO_GOLD_OZ_MULTIPLIER = 10
+POUNDS_PER_METRIC_TON = 2204.62262185
 
 ALPHA_VANTAGE_API_KEY = os.environ.get("ALPHA_VANTAGE_API_KEY", "")
 
@@ -79,14 +81,42 @@ def fetch_gold_from_alphavantage():
         else:
             change_pct = 0.0
 
+        gold_price = close_price * GLD_TO_GOLD_OZ_MULTIPLIER
+
         return {
             "date": latest_date,
-            "gold_price": round(close_price, 2),
+            "gold_price": round(gold_price, 2),
             "gold_change_pct": round(change_pct, 2),
         }, None
 
     except Exception as e:
         return None, f"EXCEPTION: {str(e)}"
+
+
+def normalize_gold_oz_price(gold_price):
+    """Normalize GLD proxy price to approximate USD/oz gold price."""
+    if not gold_price:
+        return None
+    return gold_price * GLD_TO_GOLD_OZ_MULTIPLIER if gold_price < 1000 else gold_price
+
+
+def normalize_copper_lb_price(copper_price):
+    """Normalize copper price to USD/lb.
+
+    Alpha Vantage COPPER returns USD/metric ton, while older records used
+    futures-like USD/lb values. Keep both historical formats readable.
+    """
+    if not copper_price:
+        return None
+    return copper_price / POUNDS_PER_METRIC_TON if copper_price > 100 else copper_price
+
+
+def calculate_gold_copper_ratio(gold_price, copper_price):
+    gold_oz = normalize_gold_oz_price(gold_price)
+    copper_lb = normalize_copper_lb_price(copper_price)
+    if not gold_oz or not copper_lb:
+        return None
+    return round(gold_oz / copper_lb, 2)
 
 
 def fetch_copper_from_alphavantage():
@@ -296,9 +326,10 @@ def calculate_indicators(data):
 
     stock_bond_ratio = round(earnings_yield - bond_yield, 2)
 
-    gold_copper_ratio = None
-    if latest.get("gold_price_usd") and latest.get("copper_price"):
-        gold_copper_ratio = round(latest["gold_price_usd"] / latest["copper_price"], 2)
+    gold_copper_ratio = calculate_gold_copper_ratio(
+        latest.get("gold_price_usd"),
+        latest.get("copper_price"),
+    )
 
     indicators = {
         "date": latest["date"],
