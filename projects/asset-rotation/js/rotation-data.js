@@ -3,9 +3,11 @@
 
 const DATA_URL = 'data/market_data.json';
 const INDICATORS_URL = 'data/indicators.json';
+const MACRO_URL = 'data/macro_data.json';
 
 let marketData = [];
 let indicators = {};
+let macroData = [];
 
 // 初始化
 async function init() {
@@ -52,6 +54,18 @@ async function loadData() {
         } catch (e) {
             console.log('指标数据加载失败，使用默认值');
         }
+
+        // 加载月度宏观数据（PMI/PPI/CPI/社融）
+        try {
+            const response = await fetch(MACRO_URL + '?t=' + Date.now());
+            if (response.ok) {
+                const data = await response.json();
+                macroData = Array.isArray(data) ? data : [];
+                macroData.sort((a, b) => a.month.localeCompare(b.month));
+            }
+        } catch (e) {
+            console.log('宏观数据加载失败，使用默认值');
+        }
         
         // 如果没有数据，使用示例数据
         if (marketData.length === 0) {
@@ -89,6 +103,13 @@ function useSampleData() {
         house_gold_ratio: 8.0,
         calculation_time: new Date().toISOString()
     };
+
+    macroData = [{
+        month: '2026-03',
+        pmi: 50.4,
+        ppi_yoy: 0.5,
+        updated_at: new Date().toISOString()
+    }];
 }
 
 // 更新UI
@@ -139,13 +160,16 @@ function updateUI() {
 
 // 更新信号状态
 function updateSignalStatus() {
-    // 这里应该根据实际数据更新信号状态
-    // 目前使用示例数据
-    
-    // 信号1: PPI (示例: -1.4%)
-    const ppiValue = -1.4;
+    const latest = marketData.length > 0 ? marketData[marketData.length - 1] : null;
+    const latestPmiRecord = getLatestMacroRecord('pmi');
+    const latestPpiRecord = getLatestMacroRecord('ppi_yoy');
+    const pmiStreak = getPmiExpansionStreak();
+
+    // 信号1: PPI同比转正
+    const ppiValue = latestPpiRecord?.ppi_yoy ?? -1.4;
     const ppiEl = document.getElementById('ppiValue');
     const ppiStatusEl = document.getElementById('signal1-status');
+    const ppiDetailEl = document.getElementById('ppiDetail');
     
     if (ppiEl) ppiEl.textContent = ppiValue.toFixed(1) + '%';
     if (ppiStatusEl) {
@@ -157,15 +181,19 @@ function updateSignalStatus() {
             ppiStatusEl.className = 'signal-tag signal-hold';
         }
     }
+    if (ppiDetailEl) {
+        ppiDetailEl.textContent = `当前: ${ppiValue.toFixed(1)}% | 阈值: >0% | 月份: ${latestPpiRecord?.month || '--'}`;
+    }
     
-    // 信号2: PMI (示例: 49.0%)
-    const pmiValue = 49.0;
+    // 信号2: PMI连续2月>50%
+    const pmiValue = latestPmiRecord?.pmi ?? 49.0;
     const pmiEl = document.getElementById('pmiValue');
     const pmiStatusEl = document.getElementById('signal2-status');
+    const pmiDetailEl = document.getElementById('pmiDetail');
     
     if (pmiEl) pmiEl.textContent = pmiValue.toFixed(1) + '%';
     if (pmiStatusEl) {
-        if (pmiValue >= 50) {
+        if (pmiStreak >= 2) {
             pmiStatusEl.textContent = '已触发';
             pmiStatusEl.className = 'signal-tag signal-buy';
         } else {
@@ -173,11 +201,15 @@ function updateSignalStatus() {
             pmiStatusEl.className = 'signal-tag signal-hold';
         }
     }
+    if (pmiDetailEl) {
+        pmiDetailEl.textContent = `当前: ${pmiValue.toFixed(1)}% | 连续: ${pmiStreak}月 | 月份: ${latestPmiRecord?.month || '--'}`;
+    }
     
-    // 信号3: 国债收益率 (示例: 2.27%)
-    const yieldValue = 2.27;
+    // 信号3: 国债收益率
+    const yieldValue = latest?.bond_yield_30y ?? indicators?.bond_yield ?? 2.27;
     const yieldEl = document.getElementById('yieldValue');
     const yieldStatusEl = document.getElementById('signal3-status');
+    const yieldDetailEl = document.getElementById('yieldDetail');
     
     if (yieldEl) yieldEl.textContent = yieldValue.toFixed(2) + '%';
     if (yieldStatusEl) {
@@ -189,6 +221,35 @@ function updateSignalStatus() {
             yieldStatusEl.className = 'signal-tag signal-hold';
         }
     }
+    if (yieldDetailEl) {
+        yieldDetailEl.textContent = `当前: ${yieldValue.toFixed(2)}% | 阈值: >2.8% | 日期: ${latest?.date || indicators?.date || '--'}`;
+    }
+}
+
+function getLatestMacroRecord(field) {
+    for (let i = macroData.length - 1; i >= 0; i--) {
+        const value = macroData[i]?.[field];
+        if (value !== null && value !== undefined) {
+            return macroData[i];
+        }
+    }
+    return null;
+}
+
+function getPmiExpansionStreak() {
+    let streak = 0;
+    for (let i = macroData.length - 1; i >= 0; i--) {
+        const pmi = macroData[i]?.pmi;
+        if (pmi === null || pmi === undefined) {
+            continue;
+        }
+        if (pmi > 50) {
+            streak += 1;
+        } else {
+            break;
+        }
+    }
+    return streak;
 }
 
 // 检查是否需要更新宏观数据
