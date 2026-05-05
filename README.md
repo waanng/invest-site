@@ -1,378 +1,138 @@
 # Investment Research Terminal
 
-> 投资研究终端 - 系统性投资研究项目数据展示与分析平台
+> 一个个人投资研究终端，用静态网站承载长期数据积累、主题研究和投资信号复盘。
 
-## 项目简介
+在线访问：[https://waanng.github.io/invest-site/](https://waanng.github.io/invest-site/)
 
-这是一个基于 **GitHub Pages** 的投资研究项目网站，采用金融终端风格设计，用于展示各类投资研究课题的数据和分析。
+## 设计逻辑
 
-### 核心功能
+这个网站不是资讯聚合页，也不是交易系统，而是一个“可持续积累的研究工作台”。核心目标是把投资判断拆成三层：
 
-- 📊 **实时数据追踪**: 黄金价格、期权隐含波动率、宏观经济指标
-- 🎯 **交易信号系统**: 基于数据指标的三层信号体系
-- 📝 **投资博客**: 记录研究思考和实践经验
-- 🤖 **全自动运行**: GitHub Actions 定时采集数据，零成本托管
+1. **数据层**
+   - 每个主题都有独立的数据文件，优先使用 JSON 保存可复盘的历史记录。
+   - 高频、易获取的数据通过 GitHub Actions 自动更新。
+   - 财报分项、行业瓶颈、主观评分等不适合强行自动化的数据，明确标注为手动维护或混合指标。
 
-### 当前研究项目
+2. **分析层**
+   - 每个研究主题都对应一个具体问题，而不是泛泛展示行情。
+   - 页面结构统一为：核心指标、图表分析、信号面板、历史/资产池。
+   - 指标尽量转化成可观察的触发条件，便于后续复盘。
 
-1. **黄金期权IV追踪** (Gold IV Research) 🥇
-   - 追踪黄金隐含波动率（GVZ）与金价关系
-   - 自动数据采集（每日北京时间 21:30，黄金收盘后）
-   - 三层交易信号体系（IV绝对水平、IV与价格联动、IV偏斜）
-   - 状态：🟢 运行中
+3. **表达层**
+   - 采用金融终端风格：深色背景、数据卡片、等宽数字、左侧导航。
+   - 首页负责项目总览，子页面负责单主题研究，博客负责记录研究方法和阶段性思考。
+   - 整站使用 GitHub Pages 托管，保持低成本、低维护、可长期运行。
 
-2. **资产轮动策略** (Asset Rotation) 🔄
-   - 基于"货币周期 × 信用周期"四象限框架
-   - 五大核心指标监测（国债收益率、股债比、房金比、金铜比、PPI-CPI）
-   - 月度宏观数据录入与配置建议
-   - 状态：🟢 运行中
+## 研究模块
 
-3. **算力与能源投资研究** (AI Energy Research) ⚡
-   - 跟踪 AI 资本开支、数据中心电力需求、电网瓶颈和能源资产表现
-   - 建立算力链、能源链、电网设备三类资产篮子
-   - 输出算力扩张、能源瓶颈、估值过热和配置倾向信号
-   - 状态：🟢 运行中
+### 黄金期权 IV 追踪
 
-4. **投资博客** (Investment Blog) 📝
-   - 记录投资研究方法论和实践经验
-   - 系统构建教程和技术分享
-   - 状态：🟢 运行中
+关注黄金价格、GVZ 波动率指数和期权隐含波动率信号。
 
-## 网站访问
+核心问题：
 
-**在线地址**: [https://waanng.github.io/invest-site/](https://waanng.github.io/invest-site/)
+- 当前黄金期权 IV 是贵还是便宜？
+- IV 与金价是否出现异常联动？
+- 是否存在适合买入/卖出期权的窗口？
 
-**项目文章**: [从零构建个人投资研究系统](https://waanng.github.io/invest-site/blog/posts/building-investment-research-system.html)
+### 资产轮动策略
 
-## 技术特性
+基于“货币周期 × 信用周期”的资产配置框架，监测国债收益率、股债性价比、房金比、金铜比、PMI/PPI 等指标。
 
-### 设计风格
-- **金融终端主题**: 深色背景 + 荧光绿/金色数据配色
-- **专业布局**: 左侧导航 + 顶部状态栏 + 主内容区
-- **等宽字体**: 使用 JetBrains Mono 显示数据
-- **响应式设计**: 支持桌面和移动端
+核心问题：
 
-### 功能模块
+- 当前处于复苏、过热、收缩还是衰退底部？
+- A股、黄金、长债、现金之间应该如何切换？
+- 哪些宏观信号已经触发，哪些仍在等待？
 
-#### 数据展示
-- **实时数据卡片**: 展示最新金价、GVZ、信号评分
-- **交互式图表**: Chart.js 绘制的走势对比图、相关性散点图
-- **历史数据表格**: 最近30天数据记录
+### 算力与能源投资研究
 
-#### 信号系统
-- **三层信号体系**: IV绝对水平、IV与价格联动、综合评分
-- **可视化信号**: 红绿灯式信号指示器
-- **配置建议**: 基于信号的交易建议
+跟踪 AI 资本开支、算力链表现、能源链表现、电网设备表现，以及电力瓶颈相关代理指标。
 
-#### 博客系统
-- **文章列表**: 支持标签、阅读时间、精选标记
-- **文章详情**: 目录导航、代码高亮、响应式排版
-- **动态加载**: JSON 数据管理文章
+核心问题：
 
-### 自动化架构
+- AI 投资主线是否还在扩张？
+- 市场是否从芯片主线扩散到电力、电网、核电和数据中心基础设施？
+- 算力链、能源链、电网设备谁在相对走强？
 
-```
-┌─────────────────┐     ┌──────────────┐     ┌──────────────┐
-│  Alpha Vantage  │────▶│              │     │              │
-│  (黄金价格)     │     │   Python     │     │   JSON       │
-│  主要数据源     │     │   数据采集   │────▶│   本地存储   │
-└─────────────────┘     │   脚本       │     │              │
-                        └──────────────┘     └──────────────┘
-┌─────────────────┐              │                     │
-│  Yahoo Finance  │              │                     │
-│  (GVZ指数)      │──────────────┘                     │
-│  补充数据源     │                                    │
-└─────────────────┘              ▼                     ▼
-                        ┌──────────────┐     ┌──────────────┐
-                        │ GitHub Actions│     │ GitHub Pages │
-                        │ 自动执行      │────▶│ 自动部署     │
-                        └──────────────┘     └──────────────┘
-```
+### 投资博客
 
-**特性**:
-- **双数据源**: Alpha Vantage（黄金价格）+ Yahoo Finance（GVZ指数）
-- **智能分工**: 避免单一数据源限流问题
-- **详细日志**: 每步执行都有详细输出
-- **零成本运行**: 完全使用 GitHub 免费服务
+记录研究框架、项目迭代、数据处理方法和阶段性思考。博客不是新闻流，而是研究系统的说明书和复盘笔记。
+
+## 数据更新原则
+
+- **能自动且稳定获取的数据**：使用 GitHub Actions 定时更新。
+- **容易限流的数据源**：减少调用频率，必要时拆分数据源。
+- **不适合自动化的数据**：保留手动维护，并在页面中标注数据性质。
+- **所有更新结果落到 JSON 文件**：保证页面可直接渲染，也方便追踪历史变化。
+
+当前数据大致分为三类：
+
+| 类型 | 示例 | 更新方式 |
+|---|---|---|
+| 自动行情数据 | 黄金、GVZ、资产篮子、国债收益率 | GitHub Actions |
+| 自动/半自动宏观数据 | PMI、PPI、部分市场指标 | GitHub Actions + 月度更新 |
+| 手动研究数据 | 行业代理指标、估值热度、watchlist 评分 | 人工维护 |
 
 ## 项目结构
 
-```
+```text
 invest-site/
-├── .github/
-│   └── workflows/
-│       ├── update-gold.yml          # 黄金数据自动更新（21:30 CST）
-│       └── update-rotation.yml      # 资产轮动数据更新
-├── assets/
-│   └── css/
-│       ├── terminal.css             # 金融终端主题样式
-│       └── blog.css                 # 博客页面样式
-├── blog/
-│   ├── index.html                   # 博客首页
-│   ├── data/
-│   │   └── blog-data.json           # 博客文章数据
-│   └── posts/
-│       └── *.html                   # 博客文章详情页
+├── index.html                 # 研究总览
+├── assets/css/                # 终端风格与博客样式
+├── blog/                      # 投资博客
 ├── projects/
-│   ├── gold-iv/
-│   │   ├── index.html               # 黄金项目页面
-│   │   ├── data/
-│   │   │   └── gold_data.json       # 历史数据
-│   │   ├── scripts/
-│   │   │   ├── fetch_data.py        # 主数据采集脚本
-│   │   │   ├── fetch_data_backup.py # Alpha Vantage备用
-│   │   │   └── diagnose.py          # 诊断工具
-│   │   └── js/
-│   │       └── gold-data.js         # 前端数据渲染
-│   └── asset-rotation/
-│       ├── index.html               # 资产轮动页面
-│       ├── data/
-│       │   ├── market_data.json     # 市场数据
-│       │   ├── indicators.json      # 计算指标
-│       │   └── macro_data.json      # 宏观数据
-│       └── js/
-│           └── rotation-data.js     # 数据渲染与录入
-│   └── ai-energy/
-│       ├── index.html               # 算力能源研究页面
-│       ├── data/
-│       │   └── ai_energy_data.json  # CAPEX、能源瓶颈、资产池数据
-│       ├── scripts/
-│       │   └── fetch_data.py        # 市场篮子数据更新脚本
-│       └── js/
-│           └── ai-energy-data.js    # 图表与信号渲染
-├── index.html                       # 主页
-├── README.md                        # 本文件
-└── ARTICLE.md                       # 项目详细介绍文章
+│   ├── gold-iv/               # 黄金 IV 追踪
+│   ├── asset-rotation/        # 资产轮动策略
+│   └── ai-energy/             # 算力与能源投资研究
+└── .github/workflows/         # 数据更新任务
 ```
-
-## 部署指南
-
-### 1. 创建 GitHub 仓库
-
-```bash
-# 在 GitHub 上创建仓库: waanng/invest-site
-# 选择 Public（启用 GitHub Pages）
-```
-
-### 2. 上传代码
-
-```bash
-git clone https://github.com/waanng/invest-site.git
-cd invest-site
-```
-
-### 3. 启用 GitHub Pages
-
-1. 进入仓库 **Settings** → **Pages**
-2. **Source**: Deploy from a branch
-3. **Branch**: main /(root)
-4. 点击 **Save**
-
-### 4. 启用 GitHub Actions
-
-1. 点击 **Actions** 标签
-2. 点击 **I understand my workflows, go ahead and enable them**
-
-### 5. 配置 Alpha Vantage API Key（可选但推荐）
-
-1. 访问 [Alpha Vantage](https://www.alphavantage.co/support/#api-key) 免费申请 API Key
-2. 进入仓库 **Settings** → **Secrets and variables** → **Actions**
-3. 点击 **New repository secret**
-4. Name: `ALPHA_VANTAGE_API_KEY`
-5. Value: 你的 API Key
-
-算力能源项目也会读取同一个 `ALPHA_VANTAGE_API_KEY`，用于更新算力链、能源链和电网设备资产篮子。不要把 API Key 写入代码或 JSON 数据文件。
-
-### 6. 等待部署
-
-- 首次部署需要 2-3 分钟
-- 访问 `https://waanng.github.io/invest-site/`
-
-## 数据说明
-
-### 数据来源
-
-| 数据类型 | 来源 | 代码/API | 更新频率 |
-|---------|------|----------|----------|
-| 黄金价格 | Alpha Vantage | GLD ETF | 每日 21:30 CST |
-| 黄金波动率 | Yahoo Finance | ^GVZ | 每日 21:30 CST |
-| 宏观经济 | 国家统计局 | - | 月度手动录入 |
-| 算力能源资产篮子 | Yahoo Finance | NVDA/CEG/ETN等 | 每日 22:30 CST |
-
-**为什么选择 21:30 更新时间？**
-- 黄金期货（GC=F）北京时间 20:00 收盘
-- 21:30 数据已稳定，且是美国盘后、亚洲盘前
-
-### 信号体系
-
-**信号A: IV绝对水平**
-```
-GVZ < 13    → 强烈买入 Call（极度便宜）
-GVZ 13-18   → 买入 Call（相对便宜）
-GVZ 18-25   → 观望（合理定价）
-GVZ 25-30   → 考虑卖出（相对昂贵）
-GVZ > 30    → 强烈卖出（极度昂贵）
-```
-
-**信号B: IV与价格联动**
-```
-IV↑ + 价格↑ → 恐慌性买入，警惕追高风险
-IV↑ + 价格↓ → 避险需求旺盛，逢低买入机会
-IV↓ + 价格↑ → 健康上涨，可持有
-IV↓ + 价格↓ → 恐慌出清，关注企稳信号
-```
-
-**信号C: IV偏斜**（待实现）
-- Call/Put IV 差值判断市场情绪
-
-## 故障排查
-
-### 数据未更新？
-
-1. **查看 GitHub Actions 日志**
-   - 访问 `https://github.com/waanng/invest-site/actions`
-   - 检查最新执行记录
-
-2. **运行诊断工具**
-   ```bash
-   cd projects/gold-iv
-   python scripts/diagnose.py
-   ```
-
-3. **常见问题**
-   - Alpha Vantage API Key 无效 → 检查 GitHub Secrets 配置
-   - Alpha Vantage 限流（25次/天）→ 明日自动恢复
-   - Yahoo Finance GVZ 获取失败 → 检查网络连接
-   - 网络问题 → 查看 Actions 日志中的详细错误
-
-### 手动触发更新
-
-1. 进入 Actions → Update Gold IV Data
-2. 点击 **Run workflow**
-3. 可选：勾选 **Enable debug mode** 查看详细日志
-
-## 扩展新项目
-
-### 添加新研究项目的步骤
-
-1. **创建项目目录**
-```bash
-mkdir projects/new-project
-cd projects/new-project
-```
-
-2. **创建基础文件**
-```
-new-project/
-├── index.html          # 项目页面
-├── data/
-│   └── data.json       # 数据文件
-├── scripts/
-│   └── fetch_data.py   # 数据采集脚本
-└── js/
-    └── chart.js        # 图表逻辑
-```
-
-3. **添加导航链接**
-编辑 `index.html` 和所有项目的侧边栏导航，添加新项目链接。
-
-4. **创建 GitHub Actions**
-复制 `.github/workflows/update-gold.yml` 并修改：
-- 修改 `name`
-- 修改数据获取路径
-- 修改提交信息
-
-5. **提交代码**
-```bash
-git add .
-git commit -m "Add new project: XXX"
-git push
-```
-
-### 发布博客文章
-
-1. **创建文章 HTML 文件**
-```bash
-touch blog/posts/my-article.html
-```
-
-2. **更新文章数据**
-编辑 `blog/data/blog-data.json`，添加新文章：
-```json
-{
-  "id": "my-article",
-  "title": "文章标题",
-  "summary": "文章摘要",
-  "date": "2026-03-23",
-  "author": "王安",
-  "tags": ["标签1", "标签2"],
-  "url": "posts/my-article.html"
-}
-```
-
-3. **提交发布**
-```bash
-git add .
-git commit -m "Add blog post: 文章标题"
-git push
-```
-
-## 本地开发
-
-```bash
-# 启动本地服务器（在项目根目录）
-python3 -m http.server 8080
-
-# 访问 http://localhost:8080
-```
-
-## 技术栈
-
-- **前端**: HTML5, CSS3, Vanilla JavaScript
-- **图表**: Chart.js
-- **样式**: 自定义 CSS（金融终端主题）
-- **字体**: JetBrains Mono (Google Fonts)
-- **数据采集**: Python + yfinance + requests
-- **自动化**: GitHub Actions
-- **托管**: GitHub Pages
-
-## 许可证
-
-MIT License
 
 ## 更新日志
 
-- **2026-03-25**:
-  - 重构数据获取架构：双数据源分离
-  - Alpha Vantage 获取黄金价格（避免 Yahoo Finance 黄金 API 限流）
-  - Yahoo Finance 获取 GVZ 指数（低频率调用不受限制）
-  - 添加详细日志输出，便于排查问题
+### 2026-05-05
 
-- **2026-03-24**: 
-  - 修复 GitHub Actions 数据更新问题
-  - 添加 Alpha Vantage 备用数据源
-  - 添加诊断工具 diagnose.py
-  - 改进错误处理和日志输出
+- 接入资产轮动月度宏观数据，PMI/PPI 不再使用页面硬编码。
+- 新增宏观数据更新 Action，用于定期刷新 PMI/PPI。
+- 修正资产轮动金铜比单位问题：黄金统一为美元/盎司，铜统一为美元/磅。
+- 改进算力能源项目自动化：
+  - 市场资产篮子继续每日更新。
+  - 云厂商 CAPEX 改为每周从 Alpha Vantage 现金流数据自动更新。
+  - 页面明确标注 AUTO / MANUAL / MIXED 数据性质。
 
-- **2026-03-22**: 
-  - 添加投资博客系统
-  - 发布第一篇文章《从零构建个人投资研究系统》
-  - 添加博客文章列表和详情页
+### 2026-04-24
 
-- **2026-03-21**: 
-  - 添加资产轮动策略研究项目
-  - 实现四象限周期定位
-  - 添加五大核心指标监测
+- 新增“算力与能源投资研究”主题。
+- 建立算力链、能源链、电网设备三类资产篮子。
+- 新增算力能源研究博客文章，说明从 AI 芯片到能源瓶颈的分析框架。
+- 增加 AI Energy 数据更新 Action。
 
-- **2026-03-19**: 
-  - 初始版本，包含黄金IV追踪项目
-  - 建立三层信号体系
-  - GitHub Actions 自动数据采集
+### 2026-03-25
+
+- 重构黄金数据获取架构。
+- 使用 Alpha Vantage 获取黄金相关价格数据，降低 Yahoo Finance 限流影响。
+- 保留 GVZ 作为黄金波动率观察指标。
+- 改进数据更新日志和错误处理。
+
+### 2026-03-22
+
+- 新增投资博客系统。
+- 发布第一篇项目文章《从零构建个人投资研究系统》。
+- 博客文章采用 JSON 索引 + 静态 HTML 页面结构。
+
+### 2026-03-21
+
+- 新增资产轮动策略研究项目。
+- 实现四象限周期定位。
+- 添加国债收益率、股债性价比、房金比、金铜比等核心指标。
+
+### 2026-03-19
+
+- 初始版本上线。
+- 建立黄金 IV 追踪页面。
+- 接入 GitHub Pages 与 GitHub Actions 自动更新流程。
 
 ---
 
-**Invest Research Terminal** | Data-Driven Investment Research
-
-**作者**: 王安 (北大+中科大，数据与AI从业者)
-
-**联系**: [GitHub Issues](https://github.com/waanng/invest-site/issues)
+**Invest Research Terminal**  
+Data-Driven Investment Research by 王安
