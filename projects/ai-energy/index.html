@@ -112,7 +112,7 @@
                 </div>
                 <div class="card-value mono" id="capexGrowth">--</div>
                 <div class="card-change change-up">云厂商投入周期</div>
-                <div class="card-footer mono">MSFT/GOOG/AMZN/META/ORCL</div>
+                <div class="card-footer mono">AUTO: Alpha Vantage Cash Flow</div>
             </div>
 
             <div class="data-card">
@@ -122,7 +122,7 @@
                 </div>
                 <div class="card-value mono" id="nvdaGrowth">--</div>
                 <div class="card-change change-up">算力收入兑现</div>
-                <div class="card-footer mono">Data Center Revenue YoY</div>
+                <div class="card-footer mono">MANUAL: Segment Revenue</div>
             </div>
 
             <div class="data-card">
@@ -132,7 +132,7 @@
                 </div>
                 <div class="card-value mono" id="powerGrowth">--</div>
                 <div class="card-change change-down">数据中心负荷压力</div>
-                <div class="card-footer mono">Data Center Power Demand</div>
+                <div class="card-footer mono">MANUAL: Power Demand Proxy</div>
             </div>
 
             <div class="data-card">
@@ -142,7 +142,7 @@
                 </div>
                 <div class="card-value mono" id="bottleneckIndex">--</div>
                 <div class="card-change">0-100 综合评分</div>
-                <div class="card-footer mono">POWER / GRID / PPA</div>
+                <div class="card-footer mono">MIXED: Market + Power Proxy</div>
             </div>
         </section>
 
@@ -217,7 +217,7 @@
             <div class="chart-container">
                 <div class="chart-header">
                     <div class="chart-title">投资信号面板</div>
-                    <div style="font-size: 12px; color: var(--text-muted);">基于资本开支、收入兑现、电力约束和估值热度</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">CAPEX和市场篮子自动更新；收入、电力和估值代理仍需人工维护</div>
                 </div>
                 <div class="grid grid-4" style="padding: 4px; gap: 16px;">
                     <div id="signalCapex" style="padding: 16px; background: var(--bg-secondary); border-radius: 6px;"></div>

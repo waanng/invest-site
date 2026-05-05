@@ -28,6 +28,7 @@ jobs:
       env:
         ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
         STOOQ_API_KEY: ${{ secrets.STOOQ_API_KEY }}
+        UPDATE_CAPEX: weekly
       run: |
         cd projects/ai-energy
         python scripts/fetch_data.py

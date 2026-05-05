@@ -290,5 +290,13 @@
     "power_demand_growth": 47.4,
     "energy_bottleneck": 78,
     "valuation_heat": 72
+  },
+  "data_sources": {
+    "market": "AUTO: Alpha Vantage TIME_SERIES_DAILY / optional Stooq fallback",
+    "capex": "AUTO WEEKLY: Alpha Vantage CASH_FLOW quarterlyReports",
+    "revenue": "MANUAL: NVDA segment revenue / AI server industry proxy",
+    "power": "MANUAL: data center power and grid bottleneck proxy",
+    "watchlist": "MANUAL: research universe and qualitative risk notes",
+    "signals": "MIXED: CAPEX and market-derived fields plus manual proxies"
   }
 }
