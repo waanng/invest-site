@@ -1,5 +1,353 @@
 [
   {
+    "month": "2023-01",
+    "pmi": 50.1,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -0.8,
+    "note": ""
+  },
+  {
+    "month": "2023-02",
+    "ppi_yoy": -1.4,
+    "sources": {
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "pmi": null,
+    "note": ""
+  },
+  {
+    "month": "2023-03",
+    "pmi": 51.9,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -2.5,
+    "note": ""
+  },
+  {
+    "month": "2023-04",
+    "pmi": 49.2,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -3.6,
+    "note": ""
+  },
+  {
+    "month": "2023-05",
+    "pmi": 48.8,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -4.6,
+    "note": ""
+  },
+  {
+    "month": "2023-06",
+    "pmi": 49.0,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -5.4,
+    "note": ""
+  },
+  {
+    "month": "2023-07",
+    "pmi": 49.3,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -4.4,
+    "note": ""
+  },
+  {
+    "month": "2023-08",
+    "pmi": 49.7,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -3.0,
+    "note": ""
+  },
+  {
+    "month": "2023-09",
+    "pmi": 50.2,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -2.5,
+    "note": ""
+  },
+  {
+    "month": "2023-10",
+    "pmi": 49.5,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -2.6,
+    "note": ""
+  },
+  {
+    "month": "2023-11",
+    "pmi": 49.4,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -3.0,
+    "note": ""
+  },
+  {
+    "month": "2023-12",
+    "pmi": 49.0,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -2.7,
+    "note": ""
+  },
+  {
+    "month": "2024-01",
+    "pmi": 49.2,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -2.5,
+    "note": ""
+  },
+  {
+    "month": "2024-02",
+    "ppi_yoy": -2.7,
+    "sources": {
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "pmi": null,
+    "note": ""
+  },
+  {
+    "month": "2024-03",
+    "pmi": 50.8,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -2.8,
+    "note": ""
+  },
+  {
+    "month": "2024-04",
+    "pmi": 50.4,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -2.5,
+    "note": ""
+  },
+  {
+    "month": "2024-05",
+    "pmi": 49.5,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -1.4,
+    "note": ""
+  },
+  {
+    "month": "2024-06",
+    "pmi": 49.5,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -0.8,
+    "note": ""
+  },
+  {
+    "month": "2024-07",
+    "pmi": 49.4,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -0.8,
+    "note": ""
+  },
+  {
+    "month": "2024-08",
+    "pmi": 49.1,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -1.8,
+    "note": ""
+  },
+  {
+    "month": "2024-09",
+    "pmi": 49.8,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -2.8,
+    "note": ""
+  },
+  {
+    "month": "2024-10",
+    "pmi": 50.1,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -2.9,
+    "note": ""
+  },
+  {
+    "month": "2024-11",
+    "pmi": 50.3,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -2.5,
+    "note": ""
+  },
+  {
+    "month": "2024-12",
+    "pmi": 50.1,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -2.3,
+    "note": ""
+  },
+  {
+    "month": "2025-01",
+    "pmi": 49.1,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -2.3,
+    "note": ""
+  },
+  {
+    "month": "2025-02",
+    "ppi_yoy": -2.2,
+    "sources": {
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "pmi": null,
+    "note": ""
+  },
+  {
+    "month": "2025-03",
+    "pmi": 50.5,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -2.5,
+    "note": ""
+  },
+  {
+    "month": "2025-04",
+    "pmi": 49.0,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -2.7,
+    "note": ""
+  },
+  {
+    "month": "2025-05",
+    "pmi": 49.5,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -3.3,
+    "note": ""
+  },
+  {
+    "month": "2025-06",
+    "pmi": 49.7,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -3.6,
+    "note": ""
+  },
+  {
+    "month": "2025-07",
+    "pmi": 49.3,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly",
+      "ppi_yoy": "AKShare macro_china_ppi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": -3.6,
+    "note": ""
+  },
+  {
+    "month": "2025-08",
+    "pmi": 49.4,
+    "sources": {
+      "pmi": "AKShare macro_china_pmi_yearly"
+    },
+    "updated_at": "2026-05-10T03:04:16.896064",
+    "ppi_yoy": null,
+    "note": ""
+  },
+  {
     "month": "2026-01",
     "pmi": 49.3,
     "ppi_yoy": -1.4,
