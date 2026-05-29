@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-28T15:49:20.059939+00:00",
+  "updated_at": "2026-05-29T15:48:26.238884+00:00",
   "stage": "能源瓶颈期",
   "summary": "AI资本开支仍在扩张，市场主线从芯片向电力、电网、核电和数据中心能源约束扩散。",
   "capex": [
@@ -118,112 +118,112 @@
   ],
   "market": [
     {
-      "date": "2026-05-01",
-      "compute_basket": 137.85,
-      "energy_basket": 107.97,
-      "grid_basket": 132.54
-    },
-    {
       "date": "2026-05-04",
-      "compute_basket": 136.17,
-      "energy_basket": 109.3,
-      "grid_basket": 133.48
+      "compute_basket": 141.98,
+      "energy_basket": 111.67,
+      "grid_basket": 135.1
     },
     {
       "date": "2026-05-05",
-      "compute_basket": 138.17,
-      "energy_basket": 109.41,
-      "grid_basket": 134.16
+      "compute_basket": 144.05,
+      "energy_basket": 111.77,
+      "grid_basket": 135.77
     },
     {
       "date": "2026-05-06",
-      "compute_basket": 145.14,
-      "energy_basket": 107.77,
-      "grid_basket": 136.37
+      "compute_basket": 151.33,
+      "energy_basket": 110.12,
+      "grid_basket": 137.98
     },
     {
       "date": "2026-05-07",
-      "compute_basket": 141.46,
-      "energy_basket": 105.29,
-      "grid_basket": 130.45
+      "compute_basket": 147.48,
+      "energy_basket": 107.58,
+      "grid_basket": 132.02
     },
     {
       "date": "2026-05-08",
-      "compute_basket": 151.89,
-      "energy_basket": 103.71,
-      "grid_basket": 130.71
+      "compute_basket": 158.41,
+      "energy_basket": 105.92,
+      "grid_basket": 132.29
     },
     {
       "date": "2026-05-11",
-      "compute_basket": 149.52,
-      "energy_basket": 105.19,
-      "grid_basket": 134.48
+      "compute_basket": 155.85,
+      "energy_basket": 107.43,
+      "grid_basket": 136.08
     },
     {
       "date": "2026-05-12",
-      "compute_basket": 147.83,
-      "energy_basket": 104.31,
-      "grid_basket": 132.01
+      "compute_basket": 154.05,
+      "energy_basket": 106.49,
+      "grid_basket": 133.57
     },
     {
       "date": "2026-05-13",
-      "compute_basket": 148.52,
-      "energy_basket": 102.43,
-      "grid_basket": 132.56
+      "compute_basket": 154.82,
+      "energy_basket": 104.53,
+      "grid_basket": 134.13
     },
     {
       "date": "2026-05-14",
-      "compute_basket": 153.03,
-      "energy_basket": 102.86,
-      "grid_basket": 133.66
+      "compute_basket": 159.52,
+      "energy_basket": 104.95,
+      "grid_basket": 135.23
     },
     {
       "date": "2026-05-15",
-      "compute_basket": 146.99,
-      "energy_basket": 101.61,
-      "grid_basket": 130.73
+      "compute_basket": 153.29,
+      "energy_basket": 103.66,
+      "grid_basket": 132.28
     },
     {
       "date": "2026-05-18",
-      "compute_basket": 145.45,
-      "energy_basket": 100.4,
-      "grid_basket": 125.92
+      "compute_basket": 151.66,
+      "energy_basket": 102.41,
+      "grid_basket": 127.42
     },
     {
       "date": "2026-05-19",
-      "compute_basket": 143.64,
-      "energy_basket": 100.79,
-      "grid_basket": 124.03
+      "compute_basket": 149.77,
+      "energy_basket": 102.79,
+      "grid_basket": 125.5
     },
     {
       "date": "2026-05-20",
-      "compute_basket": 148.32,
-      "energy_basket": 102.27,
-      "grid_basket": 125.19
+      "compute_basket": 154.6,
+      "energy_basket": 104.4,
+      "grid_basket": 126.67
     },
     {
       "date": "2026-05-21",
-      "compute_basket": 150.77,
-      "energy_basket": 103.46,
-      "grid_basket": 126.37
+      "compute_basket": 157.18,
+      "energy_basket": 105.64,
+      "grid_basket": 127.86
     },
     {
       "date": "2026-05-22",
-      "compute_basket": 159.72,
-      "energy_basket": 104.9,
-      "grid_basket": 127.85
+      "compute_basket": 166.72,
+      "energy_basket": 107.16,
+      "grid_basket": 129.37
     },
     {
       "date": "2026-05-26",
-      "compute_basket": 165.51,
-      "energy_basket": 105.47,
-      "grid_basket": 130.95
+      "compute_basket": 172.68,
+      "energy_basket": 107.81,
+      "grid_basket": 132.5
     },
     {
       "date": "2026-05-27",
-      "compute_basket": 164.01,
-      "energy_basket": 103.66,
-      "grid_basket": 129.54
+      "compute_basket": 171.16,
+      "energy_basket": 105.92,
+      "grid_basket": 131.1
+    },
+    {
+      "date": "2026-05-28",
+      "compute_basket": 175.84,
+      "energy_basket": 105.43,
+      "grid_basket": 129.16
     }
   ],
   "watchlist": [
@@ -296,7 +296,7 @@
     "capex_growth": 90.8,
     "nvda_dc_growth": 73.0,
     "power_demand_growth": 47.4,
-    "energy_bottleneck": 41.0,
+    "energy_bottleneck": 32.0,
     "valuation_heat": 72
   },
   "data_sources": {
