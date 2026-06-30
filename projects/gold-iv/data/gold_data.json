@@ -614,5 +614,14 @@
     "gold_change_pct": 1.13,
     "gvz": 28.36,
     "gvz_change_pct": 4.34
+  },
+  {
+    "updated_at": "2026-06-30T14:18:46.697920",
+    "source": "alphavantage+yahoo",
+    "date": "2026-06-29",
+    "gold_price": 3685.8,
+    "gold_change_pct": -1.35,
+    "gvz": 27.98,
+    "gvz_change_pct": 1.01
   }
 ]
