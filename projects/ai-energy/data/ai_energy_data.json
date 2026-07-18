@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-17T15:54:01.659098+00:00",
+  "updated_at": "2026-07-18T15:27:49.819293+00:00",
   "stage": "能源瓶颈期",
   "summary": "AI资本开支仍在扩张，市场主线从芯片向电力、电网、核电和数据中心能源约束扩散。",
   "capex": [
@@ -118,111 +118,111 @@
   ],
   "market": [
     {
-      "date": "2026-06-22",
-      "compute_basket": 199.66,
-      "energy_basket": 85.31,
-      "grid_basket": null
-    },
-    {
       "date": "2026-06-23",
-      "compute_basket": 194.17,
-      "energy_basket": 83.67,
+      "compute_basket": 185.98,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-06-24",
-      "compute_basket": 195.28,
-      "energy_basket": 82.97,
+      "compute_basket": 185.79,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-06-25",
-      "compute_basket": 193.11,
-      "energy_basket": 83.19,
+      "compute_basket": 190.28,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-06-26",
-      "compute_basket": 187.62,
-      "energy_basket": 81.74,
+      "compute_basket": 184.76,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-06-29",
-      "compute_basket": 194.13,
-      "energy_basket": 80.29,
+      "compute_basket": 191.5,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-06-30",
-      "compute_basket": 203.55,
-      "energy_basket": 76.9,
+      "compute_basket": 203.75,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-07-01",
-      "compute_basket": 196.35,
-      "energy_basket": 73.22,
+      "compute_basket": 192.74,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-07-02",
-      "compute_basket": 186.38,
-      "energy_basket": 74.07,
+      "compute_basket": 184.69,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-07-06",
-      "compute_basket": 196.98,
-      "energy_basket": 76.12,
+      "compute_basket": 197.88,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-07-07",
-      "compute_basket": 192.01,
-      "energy_basket": 74.22,
+      "compute_basket": 186.58,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-07-08",
-      "compute_basket": 198.63,
-      "energy_basket": 75.71,
+      "compute_basket": 192.13,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-07-09",
-      "compute_basket": 206.93,
-      "energy_basket": 77.63,
+      "compute_basket": 200.65,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-07-10",
-      "compute_basket": 206.03,
-      "energy_basket": 77.83,
+      "compute_basket": 204.21,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-07-13",
-      "compute_basket": 199.58,
-      "energy_basket": 79.75,
+      "compute_basket": 196.35,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-07-14",
-      "compute_basket": 207.09,
-      "energy_basket": 79.39,
+      "compute_basket": 200.23,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-07-15",
-      "compute_basket": 195.53,
-      "energy_basket": 79.91,
+      "compute_basket": 191.75,
+      "energy_basket": null,
       "grid_basket": null
     },
     {
       "date": "2026-07-16",
-      "compute_basket": 186.37,
-      "energy_basket": 77.95,
+      "compute_basket": 183.61,
+      "energy_basket": null,
+      "grid_basket": null
+    },
+    {
+      "date": "2026-07-17",
+      "compute_basket": 182.35,
+      "energy_basket": null,
       "grid_basket": null
     }
   ],
@@ -296,7 +296,7 @@
     "capex_growth": 90.8,
     "nvda_dc_growth": 73.0,
     "power_demand_growth": 47.4,
-    "energy_bottleneck": 5.0,
+    "energy_bottleneck": 7.0,
     "valuation_heat": 72
   },
   "data_sources": {
