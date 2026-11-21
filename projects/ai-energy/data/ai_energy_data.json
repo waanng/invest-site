@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-20T21:56:45.599477+00:00",
+  "updated_at": "2026-11-21T20:39:41.091452+00:00",
   "stage": "能源瓶颈期",
   "summary": "AI资本开支仍在扩张，市场主线从芯片向电力、电网、核电和数据中心能源约束扩散。",
   "capex": [
@@ -222,8 +222,8 @@
     {
       "date": "2026-11-20",
       "compute_basket": 79.83,
-      "energy_basket": 92.37,
-      "grid_basket": 79.46
+      "energy_basket": 92.32,
+      "grid_basket": 79.45
     }
   ],
   "watchlist": [
