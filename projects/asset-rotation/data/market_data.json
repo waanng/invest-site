@@ -2750,14 +2750,14 @@
   },
   {
     "date": "2026-11-24",
-    "bond_yield_30y": null,
-    "gold_price_usd": 3330.2,
-    "gold_change_pct": 3.14,
+    "bond_yield_30y": 1.2129,
+    "gold_price_usd": 3254.6,
+    "gold_change_pct": -2.27,
     "usdcny": 7.2,
-    "gold_price_cny": 770.89,
-    "hs300_price": null,
-    "hs300_change_pct": null,
+    "gold_price_cny": 753.39,
+    "hs300_price": 3963.82,
+    "hs300_change_pct": -1.19,
     "copper_price": 14473.0559,
-    "updated_at": "2026-11-24T01:29:48.576443"
+    "updated_at": "2026-11-24T23:23:39.969708"
   }
 ]
